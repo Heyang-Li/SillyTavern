@@ -196,14 +196,14 @@
 .info-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; padding: 3px 0; min-width: 0; }
 .info-row .label { font-size: .78rem; color: var(--text-muted); white-space: nowrap; }
 .info-row .leader { height: 1px; border-bottom: 1px dotted var(--line-color); transform: translateY(2px); min-width: 8px; }
-.info-row .value { font-size: .84rem; font-weight: 600; color: var(--text-main); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.info-row .value { font-size: .84rem; font-weight: 600; color: var(--text-main); word-break: break-word; overflow-wrap: break-word; }
 .thought-block .block-content { font-size: .82rem; color: var(--text-muted); font-style: italic; line-height: 1.6; }
 .thought-block .goal-line { font-style: normal; color: var(--text-main); margin-top: 2px; }
 .thought-block .goal-label { font-size: .72rem; color: var(--text-muted); letter-spacing: .08em; }
 .part-card .block-content { gap: 2px; }
 .part-card .info-row { padding: 2px 0; }
 .part-card .info-row .label { font-size: .72rem; }
-.part-card .info-row .value { font-size: .78rem; }
+.part-card .info-row .value { font-size: .78rem; word-break: break-word; overflow-wrap: break-word; }
 .part-card .info-row .status-text { font-size: .68rem; line-height: 1.3; font-weight: 400; color: var(--text-muted); white-space: normal; word-break: break-all; overflow-wrap: break-word; }
 .copyright-note {
   position: relative; z-index: 1;
