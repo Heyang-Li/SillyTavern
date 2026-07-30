@@ -1,0 +1,27 @@
+@@generate_before
+<%_
+// Safe variable extraction with fallbacks
+try {
+  var lq = getvar('stat_data.林清弦', { defaults: {} }) || {};
+  var sys = getvar('stat_data.系统', { defaults: {} }) || {};
+  var affection = (typeof lq.好感度 === 'number') ? lq.好感度 : 0;
+  var depravity = (typeof lq.堕落值 === 'number') ? lq.堕落值 : 0;
+  var exposure = (typeof lq.秘密暴露风险值 === 'number') ? lq.秘密暴露风险值 : 0;
+  var location = sys.地点 || '';
+  var people = Array.isArray(sys.在场人物) ? sys.在场人物 : [];
+} catch(e) {
+  var affection = 0;
+  var depravity = 15;
+  var exposure = 10;
+  var location = '光华大学百年校庆典礼后台/贵宾卫生间';
+  var people = ['林清弦', '{{user}}'];
+}
+
+define('affection', affection);
+define('depravity', depravity);
+define('exposure_risk', exposure);
+define('is_public', !(location.includes('林清弦的公寓') || location.includes('校外酒店')) || people.includes('沈景明'));
+define('is_with_jingming', people.includes('沈景明'));
+define('is_alone_with_user', !is_public && !is_with_jingming && people.some(function(p) { return p === '{{user}}'; }));
+define('current_stage', affection < 30 ? 'stage1' : affection < 60 ? 'stage2' : affection < 85 ? 'stage3' : 'stage4');
+_%>

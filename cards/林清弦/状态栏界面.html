@@ -235,7 +235,7 @@
   <header class="folder-header">
     <div class="time-chip">
       <span class="time-label">TIME</span>
-      <span class="time-value"><span class="value" data-var="系统.时间">—</span></span>
+      <span class="time-value">{{format_message_variable::stat_data.系统.时间}}</span>
     </div>
     <div class="brand-block">
       <span class="brand-code">档案 LQ-07</span>
@@ -263,17 +263,17 @@
           <div class="info-block">
             <div class="block-title">场景</div>
             <div class="block-content">
-              <div class="info-row"><span class="label">地点</span><span class="leader"></span><span class="value"><span class="value" data-var="系统.地点">—</span></span></div>
-              <div class="info-row"><span class="label">时间</span><span class="leader"></span><span class="value"><span class="value" data-var="系统.时间">—</span></span></div>
-              <div class="info-row"><span class="label">在场</span><span class="leader"></span><span class="value"><span class="value" data-var="系统.在场人物">—</span></span></div>
+              <div class="info-row"><span class="label">地点</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.系统.地点}}</span></div>
+              <div class="info-row"><span class="label">时间</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.系统.时间}}</span></div>
+              <div class="info-row"><span class="label">在场</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.系统.在场人物}}</span></div>
             </div>
           </div>
           <div class="info-block thought-block" style="margin-top:10px">
             <div class="block-title">内心</div>
             <div class="block-content">
-              <div><span class="value" data-var="林清弦.当前想法">—</span></div>
-              <div class="goal-line"><span class="goal-label">短期 · </span><span class="value" data-var="林清弦.短期目标">—</span></div>
-              <div class="goal-line"><span class="goal-label">长期 · </span><span class="value" data-var="林清弦.长期目标">—</span></div>
+              <div>{{format_message_variable::stat_data.林清弦.当前想法}}</div>
+              <div class="goal-line"><span class="goal-label">短期 · </span>{{format_message_variable::stat_data.林清弦.短期目标}}</div>
+              <div class="goal-line"><span class="goal-label">长期 · </span>{{format_message_variable::stat_data.林清弦.长期目标}}</div>
             </div>
           </div>
         </div>
@@ -281,10 +281,10 @@
           <div class="info-block">
             <div class="block-title">状态数值</div>
             <div class="block-content">
-              <div class="info-row"><span class="label">好感度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.好感度">—</span></span></div>
-              <div class="info-row"><span class="label">堕落值</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.堕落值">—</span></span></div>
-              <div class="info-row"><span class="label">做爱次数</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.与user做爱次数">—</span></span></div>
-              <div class="info-row"><span class="label">暴露风险</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.秘密暴露风险值">—</span></span></div>
+              <div class="info-row"><span class="label">好感度</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.好感度}}</span></div>
+              <div class="info-row"><span class="label">堕落值</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.堕落值}}</span></div>
+              <div class="info-row"><span class="label">做爱次数</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.与user做爱次数}}</span></div>
+              <div class="info-row"><span class="label">暴露风险</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.秘密暴露风险值}}</span></div>
             </div>
           </div>
         </div>
@@ -297,13 +297,13 @@
         <div class="info-block">
           <div class="block-title">整体状态</div>
           <div class="block-content">
-            <div class="info-row"><span class="label">整体淫乱度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.整体淫乱度">—</span></span></div>
+            <div class="info-row"><span class="label">整体淫乱度</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.身体性器状态.整体淫乱度}}</span></div>
           </div>
         </div>
         <div class="info-block">
           <div class="block-title">当前性欲</div>
           <div class="block-content">
-            <div class="info-row"><span class="label">性欲值</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.当前性欲">—</span></span></div>
+            <div class="info-row"><span class="label">性欲值</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.身体性器状态.当前性欲}}</span></div>
           </div>
         </div>
       </div>
@@ -311,43 +311,43 @@
         <div class="info-block part-card">
           <div class="block-title">胸部</div>
           <div class="block-content">
-            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.胸部.开发度">—</span></span></div>
-            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.胸部.状态与标记">—</span></span></div>
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.身体性器状态.胸部.开发度}}</span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text">{{format_message_variable::stat_data.林清弦.身体性器状态.胸部.状态与标记}}</span></div>
           </div>
         </div>
         <div class="info-block part-card">
           <div class="block-title">阴部</div>
           <div class="block-content">
-            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.阴部.开发度">—</span></span></div>
-            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.阴部.状态与标记">—</span></span></div>
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.身体性器状态.阴部.开发度}}</span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text">{{format_message_variable::stat_data.林清弦.身体性器状态.阴部.状态与标记}}</span></div>
           </div>
         </div>
         <div class="info-block part-card">
           <div class="block-title">阴蒂</div>
           <div class="block-content">
-            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.阴蒂.开发度">—</span></span></div>
-            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.阴蒂.状态与标记">—</span></span></div>
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.身体性器状态.阴蒂.开发度}}</span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text">{{format_message_variable::stat_data.林清弦.身体性器状态.阴蒂.状态与标记}}</span></div>
           </div>
         </div>
         <div class="info-block part-card">
           <div class="block-title">子宫</div>
           <div class="block-content">
-            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.子宫.开发度">—</span></span></div>
-            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.子宫.状态与标记">—</span></span></div>
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.身体性器状态.子宫.开发度}}</span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text">{{format_message_variable::stat_data.林清弦.身体性器状态.子宫.状态与标记}}</span></div>
           </div>
         </div>
         <div class="info-block part-card">
           <div class="block-title">后庭</div>
           <div class="block-content">
-            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.后庭.开发度">—</span></span></div>
-            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.后庭.状态与标记">—</span></span></div>
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.身体性器状态.后庭.开发度}}</span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text">{{format_message_variable::stat_data.林清弦.身体性器状态.后庭.状态与标记}}</span></div>
           </div>
         </div>
         <div class="info-block part-card">
           <div class="block-title">口腔</div>
           <div class="block-content">
-            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.口腔.开发度">—</span></span></div>
-            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.口腔.状态与标记">—</span></span></div>
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.林清弦.身体性器状态.口腔.开发度}}</span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text">{{format_message_variable::stat_data.林清弦.身体性器状态.口腔.状态与标记}}</span></div>
           </div>
         </div>
       </div>
@@ -357,9 +357,9 @@
     <div class="panel" id="panel-shen">
       <div class="single-layout">
         <div class="info-block">
-          <div class="block-title">沈景明 · <span class="value" data-var="沈景明.当前状态">—</span></div>
+          <div class="block-title">沈景明 · {{format_message_variable::stat_data.沈景明.当前状态}}</div>
           <div class="block-content">
-            <div class="info-row"><span class="label">怀疑度</span><span class="leader"></span><span class="value"><span class="value" data-var="沈景明.怀疑度">—</span></span></div>
+            <div class="info-row"><span class="label">怀疑度</span><span class="leader"></span><span class="value">{{format_message_variable::stat_data.沈景明.怀疑度}}</span></div>
           </div>
         </div>
       </div>
@@ -376,11 +376,8 @@
 </div>
 </div>
 
-
-
 <script>
 (function(){
-  // === UI Interaction ===
   var tabs=document.querySelectorAll('.tab-btn');
   var panels=document.querySelectorAll('.panel');
   var panel=document.querySelector('.status-panel');
@@ -402,48 +399,5 @@
   collapseBtn.addEventListener('click',function(){
     panel.classList.toggle('collapsed');
   });
-
-  // === Variable Data Injection ===
-  function getVar(obj, path, fallback) {
-    fallback = fallback || '—';
-    var keys = path.split('.');
-    var current = obj;
-    for (var i = 0; i < keys.length; i++) {
-      if (current == null || typeof current !== 'object') return fallback;
-      if (!(keys[i] in current)) return fallback;
-      current = current[keys[i]];
-    }
-    if (current == null) return fallback;
-    if (Array.isArray(current)) return current.join(', ');
-    return current;
-  }
-
-  async function renderVars() {
-    try {
-      var msgId = getCurrentMessageId();
-      var msgs = await getChatMessages(msgId);
-      if (!msgs || !msgs.length || !msgs[0].data || !msgs[0].data.stat_data) {
-        console.warn('[StatusBar] stat_data not found');
-        return;
-      }
-      var stat = msgs[0].data.stat_data;
-
-      var els = document.querySelectorAll('[data-var]');
-      for (var i = 0; i < els.length; i++) {
-        var el = els[i];
-        var path = el.getAttribute('data-var');
-        var val = getVar(stat, path, '—');
-        el.textContent = val;
-      }
-    } catch(e) {
-      console.error('[StatusBar] renderVars error:', e);
-    }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderVars);
-  } else {
-    renderVars();
-  }
 })();
-</script>
+</script>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

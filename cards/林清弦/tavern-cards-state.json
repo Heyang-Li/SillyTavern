@@ -1,0 +1,664 @@
+{
+  "projectName": "林清弦",
+  "worldbookName": "林清弦",
+  "form": "charactercard",
+  "mvu": true,
+  "entryManifest": {
+    "世界观": {
+      "世界设定": {
+        "keywords": [
+          "光华大学",
+          "林氏集团",
+          "沈氏实业"
+        ],
+        "abstract": "现代中国都市背景，光华大学为核心舞台",
+        "contents": [
+          {
+            "content": "---\n<worldview>"
+          },
+          {
+            "file": "世界书/世界观/世界设定.yaml"
+          },
+          {
+            "content": "</worldview>"
+          }
+        ],
+        "uid": 0,
+        "enabled": true,
+        "strategy": {
+          "type": "constant"
+        },
+        "position": {
+          "type": "before_character_definition",
+          "order": 20
+        }
+      }
+    },
+    "扮演准则": {
+      "扮演准则": {
+        "keywords": [],
+        "abstract": "AI 扮演林清弦的行为约束——清冷但不面瘫，有欲望但不淫荡，文艺细腻的第三人称叙事",
+        "contents": [
+          {
+            "content": "---\n<presentation>"
+          },
+          {
+            "file": "世界书/扮演准则/扮演准则.yaml"
+          },
+          {
+            "content": "</presentation>"
+          }
+        ],
+        "uid": 1,
+        "enabled": true,
+        "strategy": {
+          "type": "constant"
+        },
+        "position": {
+          "type": "before_character_definition",
+          "order": 30
+        }
+      }
+    },
+    "地理": {
+      "光华大学": {
+        "scope": "specific",
+        "part": "region",
+        "keywords": [
+          "光华大学",
+          "光华"
+        ],
+        "abstract": "国内顶尖私立大学，精英教育标杆，金融医学为王牌专业",
+        "contents": [
+          {
+            "content": "---\n<region region=\"光华大学\">"
+          },
+          {
+            "file": "世界书/地理/光华大学.yaml"
+          },
+          {
+            "content": "</region>"
+          }
+        ],
+        "uid": 2,
+        "enabled": true,
+        "strategy": {
+          "type": "selective",
+          "keys": [
+            "光华大学",
+            "光华"
+          ]
+        },
+        "position": {
+          "type": "before_character_definition",
+          "order": 40
+        }
+      },
+      "林氏集团": {
+        "scope": "specific",
+        "part": "faction",
+        "keywords": [
+          "林氏集团",
+          "林家"
+        ],
+        "abstract": "林氏集团——国内知名综合企业，金融地产为主，林清弦的家族背景",
+        "contents": [
+          {
+            "content": "---\n<faction faction=\"林氏集团\">"
+          },
+          {
+            "file": "世界书/地理/林氏集团.yaml"
+          },
+          {
+            "content": "</faction>"
+          }
+        ],
+        "uid": 3,
+        "enabled": true,
+        "strategy": {
+          "type": "selective",
+          "keys": [
+            "林氏集团",
+            "林家"
+          ]
+        },
+        "position": {
+          "type": "before_character_definition",
+          "order": 50
+        }
+      },
+      "沈氏实业": {
+        "scope": "specific",
+        "part": "faction",
+        "keywords": [
+          "沈氏实业",
+          "沈家"
+        ],
+        "abstract": "沈氏实业——实体制造业龙头，近年面临转型困境，沈景明的家族背景",
+        "contents": [
+          {
+            "content": "---\n<faction faction=\"沈氏实业\">"
+          },
+          {
+            "file": "世界书/地理/沈氏实业.yaml"
+          },
+          {
+            "content": "</faction>"
+          }
+        ],
+        "uid": 4,
+        "enabled": true,
+        "strategy": {
+          "type": "selective",
+          "keys": [
+            "沈氏实业",
+            "沈家"
+          ]
+        },
+        "position": {
+          "type": "before_character_definition",
+          "order": 60
+        }
+      },
+      "光华学生会": {
+        "scope": "specific",
+        "part": "faction",
+        "keywords": [
+          "光华学生会",
+          "学生会"
+        ],
+        "abstract": "光华大学学生会，沈景明与林清弦共同主持的校园权力核心",
+        "contents": [
+          {
+            "content": "---\n<faction faction=\"光华学生会\">"
+          },
+          {
+            "file": "世界书/地理/光华学生会.yaml"
+          },
+          {
+            "content": "</faction>"
+          }
+        ],
+        "uid": 5,
+        "enabled": true,
+        "strategy": {
+          "type": "selective",
+          "keys": [
+            "光华学生会",
+            "学生会"
+          ]
+        },
+        "position": {
+          "type": "before_character_definition",
+          "order": 70
+        }
+      }
+    },
+    "角色": {
+      "林清弦_性格调色盘": {
+        "scope": "specific",
+        "part": "personality",
+        "keywords": [
+          "林清弦",
+          "清弦",
+          "林副主席",
+          "林小姐"
+        ],
+        "abstract": "林清弦四阶段性格调色盘：深爱沈景明期（克制自律）→动摇期（困惑拉扯）→偏向期（依赖坦诚）→沉沦期（沉溺占有），底色清冷贯穿始终",
+        "contents": [
+          {
+            "content": "---\n<character_personality character=\"林清弦\">"
+          },
+          {
+            "file": "世界书/角色/林清弦/性格调色盘.yaml"
+          },
+          {
+            "content": "</character_personality>"
+          }
+        ],
+        "uid": 6,
+        "enabled": true,
+        "strategy": {
+          "type": "constant"
+        },
+        "position": {
+          "type": "after_character_definition",
+          "order": 80
+        }
+      },
+      "林清弦_三面性": {
+        "scope": "specific",
+        "part": "tri_faceted",
+        "keywords": [
+          "林清弦",
+          "清弦",
+          "林副主席",
+          "林小姐"
+        ],
+        "abstract": "林清弦三面性：公开场合完美林副主席 vs {{user}} 面前真实自我 vs 沈景明面前合格未婚妻，由 EJS 段落控制按场景切换，含语料、过渡和渗透",
+        "contents": [
+          {
+            "content": "---\n<character_tri_faceted character=\"林清弦\">"
+          },
+          {
+            "file": "世界书/角色/林清弦/三面性.yaml"
+          },
+          {
+            "content": "</character_tri_faceted>"
+          }
+        ],
+        "uid": 7,
+        "enabled": true,
+        "strategy": {
+          "type": "constant"
+        },
+        "position": {
+          "type": "after_character_definition",
+          "order": 81
+        }
+      },
+      "林清弦_二次解释": {
+        "scope": "specific",
+        "part": "personality",
+        "rephrase": true,
+        "keywords": [
+          "林清弦",
+          "清弦",
+          "林副主席",
+          "林小姐"
+        ],
+        "abstract": "林清弦的深层解读：清冷不是性冷淡而是性压抑，完美是盔甲不是本质，对沈景明的感情是从爱到感激到习惯再到负担的渐变，防止 AI 对「清冷女神」的刻板误解",
+        "contents": [
+          {
+            "content": "---\n<character_rephrase character=\"林清弦\">"
+          },
+          {
+            "file": "世界书/角色/林清弦/二次解释.yaml"
+          },
+          {
+            "content": "</character_rephrase>"
+          }
+        ],
+        "uid": 8,
+        "enabled": true,
+        "strategy": {
+          "type": "constant"
+        },
+        "position": {
+          "type": "after_character_definition",
+          "order": 140
+        }
+      },
+      "角色速览": {
+        "scope": "catalog",
+        "part": "basic",
+        "keywords": [
+          "林清弦",
+          "沈景明"
+        ],
+        "abstract": "所有出场角色的速览索引——{{user}}（秘密情人）、林清弦（核心）、沈景明（公开男友）",
+        "contents": [
+          {
+            "content": "---\n<character_catalog>"
+          },
+          {
+            "file": "世界书/角色/角色速览.yaml"
+          },
+          {
+            "content": "</character_catalog>"
+          }
+        ],
+        "uid": 9,
+        "enabled": true,
+        "strategy": {
+          "type": "constant"
+        },
+        "position": {
+          "type": "after_character_definition",
+          "order": 82
+        }
+      },
+      "林清弦_基础信息": {
+        "scope": "specific",
+        "part": "basic",
+        "keywords": [
+          "林清弦",
+          "清弦",
+          "林副主席",
+          "林小姐"
+        ],
+        "abstract": "林清弦的基础档案：21岁光华金融系大三，学生会副主席，林氏集团千金，沈景明的公开未婚妻与 {{user}} 的秘密情人。外貌只保留标志性特征——乌黑长发不染烫、珍珠耳钉、制服一丝不苟、白色保时捷",
+        "contents": [
+          {
+            "content": "---\n<character_basic character=\"林清弦\">"
+          },
+          {
+            "file": "世界书/角色/林清弦/基础信息.yaml"
+          },
+          {
+            "content": "</character_basic>"
+          }
+        ],
+        "uid": 10,
+        "enabled": true,
+        "strategy": {
+          "type": "constant"
+        },
+        "position": {
+          "type": "after_character_definition",
+          "order": 83
+        }
+      }
+    },
+    "NPC": {
+      "沈景明": {
+        "path": "世界书/NPC/沈景明.yaml",
+        "keywords": [
+          "沈景明",
+          "景明",
+          "沈主席",
+          "沈会长"
+        ],
+        "abstract": "沈景明——21岁光华学生会主席，沈氏实业独子，林清弦的完美男友与悲剧配角",
+        "uid": 11,
+        "enabled": true,
+        "strategy": {
+          "type": "selective",
+          "keys": [
+            "沈景明",
+            "景明",
+            "沈主席",
+            "沈会长"
+          ]
+        },
+        "position": {
+          "type": "after_character_definition",
+          "order": 90
+        }
+      },
+      "{{user}}背景": {
+        "path": "世界书/NPC/user背景.yaml",
+        "keywords": [
+          "{{user}}"
+        ],
+        "abstract": "{{user}}——光华医学系大三第一，医药世家富二代，天才但道德感薄弱",
+        "uid": 12,
+        "enabled": true,
+        "strategy": {
+          "type": "selective",
+          "keys": [
+            "{{user}}"
+          ]
+        },
+        "position": {
+          "type": "after_character_definition",
+          "order": 91
+        }
+      }
+    },
+    "EJS预处理": {
+      "EJS预处理": {
+        "path": "世界书/EJS/EJS预处理.txt",
+        "keywords": [],
+        "abstract": "EJS变量预处理：公开/私下判断+四阶段判定+暴露风险等级",
+        "uid": 13,
+        "enabled": true,
+        "strategy": {
+          "type": "constant"
+        },
+        "position": {
+          "type": "before_character_definition",
+          "order": 10
+        }
+      }
+    },
+    "阶段指导": {
+      "阶段指导": {
+        "scope": "catalog",
+        "keywords": [],
+        "abstract": "根据四阶段+公共/私下环境指导AI主持策略，EJS段落控制",
+        "contents": [
+          {
+            "content": "---\n<stage_guidance>"
+          },
+          {
+            "file": "世界书/阶段指导/阶段指导.yaml"
+          },
+          {
+            "content": "</stage_guidance>"
+          }
+        ],
+        "uid": 14,
+        "enabled": true,
+        "strategy": {
+          "type": "constant"
+        },
+        "position": {
+          "type": "at_depth",
+          "role": "system",
+          "depth": 0,
+          "order": 130
+        }
+      }
+    },
+    "MVU": {
+      "[InitVar]请勿打开": {
+        "part": "initvar",
+        "keywords": [],
+        "abstract": "初始变量：系统状态+林清弦状态+身体性器状态+沈景明状态，开场白校庆后台起点",
+        "contents": [
+          {
+            "content": "---\n<initvar>"
+          },
+          {
+            "file": "世界书/变量/initvar.yaml"
+          },
+          {
+            "content": "</initvar>"
+          }
+        ],
+        "uid": 15,
+        "enabled": true,
+        "position": {
+          "type": "at_depth",
+          "role": "system",
+          "depth": 0,
+          "order": 100
+        },
+        "strategy": {
+          "type": "constant"
+        }
+      },
+      "变量列表": {
+        "part": "variable_list",
+        "keywords": [],
+        "abstract": "完整MVU变量列表：系统变量/林清弦状态/身体性器状态/沈景明状态",
+        "contents": [
+          {
+            "content": "---\n<variable_list>"
+          },
+          {
+            "file": "世界书/变量/变量列表.yaml"
+          },
+          {
+            "content": "</variable_list>"
+          }
+        ],
+        "uid": 16,
+        "enabled": true,
+        "strategy": {
+          "type": "constant"
+        },
+        "position": {
+          "type": "at_depth",
+          "role": "system",
+          "depth": 0,
+          "order": 110
+        }
+      },
+      "变量更新规则": {
+        "part": "update_rules",
+        "keywords": [],
+        "abstract": "变量更新规则：好感度/堕落值变化1-5，做爱次数+1，暴露风险和怀疑度的增减逻辑",
+        "contents": [
+          {
+            "content": "---\n<update_rules>"
+          },
+          {
+            "file": "世界书/变量/变量更新规则.yaml"
+          },
+          {
+            "content": "</update_rules>"
+          }
+        ],
+        "uid": 17,
+        "enabled": true,
+        "strategy": {
+          "type": "constant"
+        },
+        "position": {
+          "type": "at_depth",
+          "role": "system",
+          "depth": 0,
+          "order": 120
+        }
+      }
+    }
+  },
+  "typeLists": {
+    "before_char": [
+      "EJS预处理",
+      "世界观",
+      "扮演准则",
+      "时间线",
+      "地理"
+    ],
+    "after_char": [
+      "角色",
+      "NPC"
+    ],
+    "depth": [
+      "事件",
+      "MVU",
+      "阶段指导"
+    ]
+  },
+  "strategyThresholds": {
+    "角色": {
+      "basic": {
+        "threshold": 5,
+        "required": true
+      },
+      "other": {
+        "threshold": 2,
+        "required": false
+      },
+      "personality": {
+        "threshold": 2,
+        "required": true
+      },
+      "tri_faceted": {
+        "threshold": 2,
+        "required": false
+      }
+    },
+    "事件": 0,
+    "地理": {
+      "faction": {
+        "threshold": 4,
+        "required": false
+      },
+      "region": {
+        "threshold": 4,
+        "required": false
+      },
+      "scene": {
+        "threshold": 4,
+        "required": false
+      }
+    },
+    "MVU": {
+      "initvar": {
+        "threshold": null,
+        "required": false
+      },
+      "output_format": {
+        "threshold": "Infinity",
+        "required": false
+      },
+      "update_rules": {
+        "threshold": "Infinity",
+        "required": false
+      },
+      "variable_list": {
+        "threshold": "Infinity",
+        "required": false
+      }
+    },
+    "NPC": 0,
+    "EJS预处理": "Infinity",
+    "扮演准则": "Infinity",
+    "时间线": {
+      "history": {
+        "threshold": "Infinity",
+        "required": false
+      },
+      "plot": {
+        "threshold": "Infinity",
+        "required": false
+      }
+    },
+    "世界观": "Infinity",
+    "阶段指导": "Infinity"
+  },
+  "partOrder": {
+    "角色": [
+      "basic",
+      "personality",
+      "tri_faceted",
+      "other"
+    ],
+    "地理": [
+      "region",
+      "scene",
+      "faction"
+    ],
+    "MVU": [
+      "variable_list",
+      "update_rules",
+      "output_format",
+      "initvar"
+    ],
+    "时间线": [
+      "history",
+      "plot"
+    ]
+  },
+  "depth_defaults": {
+    "role": "system",
+    "depth": 0
+  },
+  "description": "",
+  "first_messages": [
+    "开场白/0.txt"
+  ],
+  "creator": "",
+  "creator_notes": "",
+  "version": "1.0",
+  "create_date": "2026-07-29T14:23:43.933Z",
+  "extensions": {
+    "tavern_helper": {
+      "scripts": {},
+      "variables": {}
+    },
+    "talkativeness": "0.5",
+    "fav": false,
+    "depth_prompt": {
+      "prompt": "",
+      "depth": 4,
+      "role": "system"
+    }
+  },
+  "regex_scripts": {},
+  "post_history_instructions": "Output StatusPlaceHolderImpl at start then variable update block at end per format."
+}

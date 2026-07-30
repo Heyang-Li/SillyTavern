@@ -1,0 +1,199 @@
+<variable_list>
+系统:
+  时间:
+    type: string
+    format: "YYYY/MM/DD-HH:MM"
+    range: "自由文本（建议格式 YYYY/MM/DD-HH:MM）"
+    description: "当前场景的日期与时间，由 AI 在每次回复后自然推进。"
+  地点:
+    type: string
+    range: "自由文本"
+    description: "当前场景的精确地点。常用值：光华大学百年校庆典礼后台/贵宾卫生间、光华大学礼堂、光华大学图书馆、光华大学学生会办公室、光华大学医学院实验楼、光华大学校园步道、林清弦的公寓（客厅/卧室）、校外高档餐厅、校外酒店等。"
+  在场人物:
+    type: z.array（字符串数组）
+    range: "自由文本数组"
+    description: "当前场景中在场的人物列表。至少包含 [\"林清弦\"]，根据场景可能包含 \"{{user}}\"、\"沈景明\"、其他NPC等。"
+
+林清弦:
+  当前想法:
+    type: string
+    range: "≤40字"
+    description: "林清弦此刻最真实的内心活动。应随场景变化实时更新，反映她当下的矛盾、渴望或平静。不超过40字。"
+  短期目标:
+    type: string
+    range: "自由文本"
+    description: "林清弦近期（本周/本月）最想达成的事。随剧情发展而更新。"
+  长期目标:
+    type: string
+    range: "自由文本"
+    description: "林清弦长远（数年尺度）的人生目标。可能随阶段推进而发生根本性变化——从「顺利完婚」到「结束婚约」。"
+  好感度:
+    type: number
+    range: 0~100
+    description: "林清弦对 {{user}} 的好感度。驱动四阶段切换的核心变量。日常互动小幅增减（1-5），关键事件可大幅跳变。阶段阈值：<30=深爱沈期(stage1)，30-59=动摇期(stage2)，60-84=偏向期(stage3)，≥85=沉沦期(stage4)。"
+  堕落值:
+    type: number
+    range: 0~100
+    description: "林清弦在性方面的堕落程度。随越界行为逐步增长，辅助驱动四阶段切换。与好感度正相关但不完全同步——她可能好感度很高但堕落值增长较慢（感情先行），也可能堕落值飙升但好感度尚未跟上（身体先行）。"
+  与{{user}}做爱次数:
+    type: number
+    range: "0~∞"
+    description: "林清弦与 {{user}} 累计发生性行为的次数。每次发生性行为时+1。开场为6次。只计数完整的性行为，边缘性行为不计入。"
+  秘密暴露风险值:
+    type: number
+    range: 0~100
+    description: "林清弦出轨/秘密关系被沈景明或其他人发现的概率风险。公开场合亲密行为或可疑行踪+5~15；谨慎避嫌、长时间无异常行为则逐日自然衰减-3。0=绝对安全，50=开始危险，80=濒临暴露，100=已被发现。"
+  身体性器状态:
+    type: object
+    range: "嵌套对象，各字段有其子范围"
+    description: "追踪林清弦身体各部位的状态，随性行为逐步开发和变化。详见子字段。"
+
+  身体性器状态.整体淫乱度:
+    type: number
+    range: 0~100
+    description: "林清弦整体在性方面的开放/淫乱程度。由各部位开发度和性行为频率共同决定。0=完全克制，50=开始享受，100=彻底放纵。"
+  身体性器状态.当前性欲:
+    type: number
+    range: 0~100
+    description: "林清弦当前的性欲强度。受场景、情绪、身体状态和近期性行为频率影响。0=无欲望，50=持续分心，100=难以抑制的渴望。"
+
+  身体性器状态.胸部.尺寸:
+    type: string
+    range: "自由文本"
+    description: "胸部尺寸描述（如C罩杯）。"
+  身体性器状态.胸部.乳头状态:
+    type: string
+    range: "自由文本（正常未兴奋/挺立/敏感/...）"
+    description: "乳头当前生理状态。"
+  身体性器状态.胸部.敏感度:
+    type: string
+    range: "低/中等/中等偏高/高/极高"
+    description: "胸部对触碰的敏感程度。随开发度提升。"
+  身体性器状态.胸部.开发度:
+    type: number
+    range: 0~100
+    description: "胸部被开发的程度。0=从未被触碰/开发，100=完全开发。"
+  身体性器状态.胸部.当前状态:
+    type: string
+    range: "自由文本"
+    description: "胸部当前的综合状态描述。"
+  身体性器状态.胸部.特殊标记:
+    type: string
+    range: "自由文本"
+    description: "胸部的特殊标记（吻痕、痕迹等），无则为\"无\"。"
+
+  身体性器状态.阴部.处女膜:
+    type: string
+    range: "完整/已破裂"
+    description: "处女膜状态。开场已破裂——与 {{user}} 的性行为导致。"
+  身体性器状态.阴部.紧致度:
+    type: string
+    range: "极紧致/紧致/适中/较松弛"
+    description: "阴道紧致程度。随使用频率下降。"
+  身体性器状态.阴部.敏感度:
+    type: string
+    range: "低/中等/中等偏高/高/极高"
+    description: "阴部对触碰的敏感程度。"
+  身体性器状态.阴部.开发度:
+    type: number
+    range: 0~100
+    description: "阴部被开发的程度。0=未经人事，100=完全开发。"
+  身体性器状态.阴部.当前状态:
+    type: string
+    range: "自由文本"
+    description: "阴部当前的综合状态描述（干燥/湿润/兴奋等）。"
+  身体性器状态.阴部.特殊标记:
+    type: string
+    range: "自由文本"
+    description: "阴部的特殊标记，无则为\"无\"。"
+
+  身体性器状态.阴蒂.大小:
+    type: string
+    range: "正常/略大/..."
+    description: "阴蒂大小描述。"
+  身体性器状态.阴蒂.敏感度:
+    type: string
+    range: "低/中等/中等偏高/高/极高"
+    description: "阴蒂对触碰的敏感程度。通常是女性最敏感的部位。"
+  身体性器状态.阴蒂.开发度:
+    type: number
+    range: 0~100
+    description: "阴蒂被开发的程度。"
+  身体性器状态.阴蒂.当前状态:
+    type: string
+    range: "自由文本"
+    description: "阴蒂当前的综合状态描述。"
+  身体性器状态.阴蒂.特殊标记:
+    type: string
+    range: "自由文本"
+    description: "阴蒂的特殊标记，无则为\"无\"。"
+
+  身体性器状态.子宫.状态:
+    type: string
+    range: "健康/..."
+    description: "子宫健康状态。"
+  身体性器状态.子宫.敏感度:
+    type: string
+    range: "低/中等/中等偏高/高/极高"
+    description: "子宫对深度触碰的敏感程度。"
+  身体性器状态.子宫.开发度:
+    type: number
+    range: 0~100
+    description: "子宫被开发的程度（如宫颈刺激经历）。"
+  身体性器状态.子宫.当前状态:
+    type: string
+    range: "自由文本"
+    description: "子宫当前的综合状态描述。"
+  身体性器状态.子宫.特殊标记:
+    type: string
+    range: "自由文本"
+    description: "子宫的特殊标记，无则为\"无\"。"
+
+  身体性器状态.后庭.紧致度:
+    type: string
+    range: "极紧致/紧致/适中/..."
+    description: "后庭紧致程度。开场为极紧致——从未被开发。"
+  身体性器状态.后庭.敏感度:
+    type: string
+    range: "低/中等/中等偏高/高/极高"
+    description: "后庭对触碰的敏感程度。"
+  身体性器状态.后庭.开发度:
+    type: number
+    range: 0~100
+    description: "后庭被开发的程度。0=从未被开发。"
+  身体性器状态.后庭.当前状态:
+    type: string
+    range: "自由文本"
+    description: "后庭当前的综合状态描述。"
+  身体性器状态.后庭.特殊标记:
+    type: string
+    range: "自由文本"
+    description: "后庭的特殊标记，无则为\"无\"。"
+
+  身体性器状态.口腔.敏感度:
+    type: string
+    range: "低/中等/中等偏高/高/极高"
+    description: "口腔对性行为的敏感程度。"
+  身体性器状态.口腔.开发度:
+    type: number
+    range: 0~100
+    description: "口腔被开发的程度（口交经历）。"
+  身体性器状态.口腔.当前状态:
+    type: string
+    range: "自由文本"
+    description: "口腔当前的综合状态描述。"
+  身体性器状态.口腔.特殊标记:
+    type: string
+    range: "自由文本"
+    description: "口腔的特殊标记，无则为\"无\"。"
+
+沈景明:
+  怀疑度:
+    type: number
+    range: 0~100
+    description: "沈景明对林清弦行为异常的察觉程度。0=完全无感，信任如初；20=注意到她偶尔心不在焉，解读为学业压力；50=开始留意她行踪的规律性变化，在心里积累疑点；80=有所察觉但无法确认，开始有意无意地试探；100=确认出轨，关系不可逆破裂。行为异常时缓慢增长，正常时缓慢衰减。"
+  当前状态:
+    type: string
+    range: "自由文本"
+    description: "沈景明当前在做什么、在哪里、情绪状态如何。随剧情更新。"
+</variable_list>
