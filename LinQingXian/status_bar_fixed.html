@@ -1,0 +1,451 @@
+<style>
+:root {
+  --paper-bg: #eef4fb;
+  --card-bg: #f7fbff;
+  --text-main: #1b2a38;
+  --text-muted: #5a6a79;
+  --border-color: #c7d6e6;
+  --shadow-color: rgba(20,38,58,0.18);
+  --tag-bg: rgba(82,135,185,0.16);
+  --tag-color: #2c6aa3;
+  --tab-bg: #dde8f3;
+  --tab-active: #f1f7fd;
+  --accent: #4b89c4;
+  --line-color: rgba(156,185,215,0.4);
+  --ring-color: rgba(92,127,164,0.55);
+  --spine: rgba(91,128,168,0.16);
+  --staple: #97a6b6;
+  --grid-line: rgba(156,185,215,0.18);
+}
+[data-theme="dark"] {
+  --paper-bg: #0f1721;
+  --card-bg: #18212b;
+  --text-main: #c9d4e0;
+  --text-muted: #97a7b8;
+  --border-color: rgba(92,127,164,0.45);
+  --shadow-color: rgba(0,0,0,0.55);
+  --tag-bg: rgba(82,135,185,0.25);
+  --tag-color: #9fd0ff;
+  --tab-bg: #1f2a36;
+  --tab-active: #253241;
+  --accent: #6aa6e3;
+  --line-color: rgba(70,100,130,0.45);
+  --ring-color: rgba(88,123,158,0.55);
+  --spine: rgba(96,135,175,0.2);
+  --staple: #5c6d7d;
+  --grid-line: rgba(70,100,130,0.25);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+.status-panel {
+  font-family: "STSong","Songti SC","SimSun",serif;
+  background: transparent; color: var(--text-main);
+  line-height: 1.4;
+  max-width: 760px; margin: 0 auto;
+  border-radius: 18px; overflow: hidden;
+  transition: all .4s cubic-bezier(0.4,0,0.2,1);
+}
+.folder-shell {
+  position: relative;
+  padding: 12px 14px 12px 50px;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  background-color: var(--paper-bg);
+  background-image:
+    linear-gradient(transparent 21px, var(--grid-line) 22px),
+    linear-gradient(90deg, transparent 21px, var(--grid-line) 22px);
+  background-size: 22px 22px;
+  isolation: isolate;
+  overflow: hidden;
+  min-width: 0;
+}
+.folder-shell::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 40px;
+  background: linear-gradient(180deg, var(--spine), transparent 60%);
+  border-right: 1px solid var(--border-color);
+  z-index: 0;
+}
+.folder-shell::after {
+  content: "";
+  position: absolute;
+  left: 16px; top: 24px;
+  width: 10px; height: 10px;
+  border: 2px solid var(--staple);
+  border-radius: 50%;
+  box-shadow:
+    0 70px 0 0 var(--staple),
+    0 140px 0 0 var(--staple),
+    0 210px 0 0 var(--staple),
+    0 280px 0 0 var(--staple),
+    0 350px 0 0 var(--staple);
+  opacity: .8; z-index: 0;
+}
+.folder-header {
+  position: relative; z-index: 1;
+  display: flex; align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 8px; flex-wrap: wrap; min-width: 0;
+  border-bottom: 1px dashed var(--border-color);
+}
+.time-chip {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 6px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--card-bg);
+  box-shadow: 0 6px 14px var(--shadow-color);
+  min-width: 110px;
+}
+.time-label { font-size: .6rem; letter-spacing: .2em; color: var(--text-muted); }
+.time-value { font-size: .76rem; font-weight: 600; color: var(--text-main); }
+.brand-block {
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 8px 12px;
+  display: flex; flex-direction: column;
+  align-items: flex-start; gap: 4px;
+  cursor: pointer;
+  box-shadow: 0 8px 18px var(--shadow-color);
+  transition: transform .2s ease;
+  text-align: left; flex: 1 1 auto; min-width: 0; overflow: hidden;
+}
+.brand-block:hover { transform: translateY(-1px); }
+.brand-code { font-size: .66rem; letter-spacing: .2em; color: var(--text-muted); }
+.brand-title { font-size: 1rem; font-weight: 700; color: var(--text-main); }
+.brand-meta { font-size: .72rem; padding: 3px 8px; background: var(--tag-bg); border-radius: 999px; color: var(--text-main); }
+.header-actions { display: flex; gap: 8px; }
+.ctrl-btn {
+  width: 30px; height: 30px;
+  border: 1px solid var(--border-color);
+  background: var(--tab-active);
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .25s ease;
+  color: var(--text-main);
+  font-size: .9rem;
+}
+.ctrl-btn:hover { background: var(--tab-bg); transform: scale(1.05); }
+.collapse-arrow { transition: transform .35s cubic-bezier(0.4,0,0.2,1); font-size: .7rem; }
+.status-panel.collapsed .collapse-arrow { transform: rotate(180deg); }
+.tab-rail {
+  position: relative; z-index: 1;
+  display: flex; flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+  margin: 8px 0 0;
+  padding-right: 6px;
+}
+.tab-btn {
+  border: 1px solid var(--border-color);
+  background: var(--tab-bg);
+  border-radius: 10px 10px 6px 6px;
+  padding: 5px 8px;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: .78rem; color: var(--text-main);
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.tab-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--shadow-color); }
+.tab-btn.active { background: var(--tab-active); border-color: var(--ring-color); box-shadow: 0 6px 16px var(--shadow-color); }
+.tab-icon { font-size: .85rem; }
+.panel-body {
+  position: relative; z-index: 1;
+  padding: 12px 6px 2px;
+  max-height: 1200px; opacity: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: max-height .4s cubic-bezier(0.4,0,0.2,1), opacity .3s ease, padding .35s ease;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+.status-panel.collapsed .panel-body { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; overflow: hidden; }
+.panel { display: none; }
+.panel.active { display: block; }
+.daily-grid { display: grid; grid-template-columns: 1.2fr .9fr; gap: 10px; align-items: start; min-width: 0; }
+.col { min-width: 0; }
+.body-top { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.body-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; min-width: 0; }
+.info-block {
+  position: relative;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 9px 12px;
+  box-shadow: 0 6px 16px var(--shadow-color);
+  transition: all .3s ease;
+  min-width: 0;
+}
+.info-block::before {
+  content: "";
+  position: absolute;
+  top: -6px; right: 18px;
+  width: 42px; height: 12px;
+  background: rgba(82,135,185,.18);
+  border: 1px dashed rgba(82,135,185,.35);
+  border-radius: 4px;
+  transform: rotate(-2deg);
+  pointer-events: none;
+}
+.info-block:hover { transform: translateY(-1px); box-shadow: 0 10px 20px var(--shadow-color); }
+.block-title { font-size: .84rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px dashed var(--border-color); }
+.block-content { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.info-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; padding: 3px 0; min-width: 0; }
+.info-row .label { font-size: .78rem; color: var(--text-muted); white-space: nowrap; }
+.info-row .leader { height: 1px; border-bottom: 1px dotted var(--line-color); transform: translateY(2px); min-width: 8px; }
+.info-row .value { font-size: .84rem; font-weight: 600; color: var(--text-main); word-break: break-word; overflow-wrap: break-word; }
+.thought-block .block-content { font-size: .82rem; color: var(--text-muted); font-style: italic; line-height: 1.6; }
+.thought-block .goal-line { font-style: normal; color: var(--text-main); margin-top: 2px; }
+.thought-block .goal-label { font-size: .72rem; color: var(--text-muted); letter-spacing: .08em; }
+.part-card .block-content { gap: 2px; }
+.part-card .info-row { padding: 2px 0; }
+.part-card .info-row .label { font-size: .72rem; }
+.part-card .info-row .value { font-size: .78rem; word-break: break-word; overflow-wrap: break-word; }
+.part-card .info-row .status-text { font-size: .68rem; line-height: 1.3; font-weight: 400; color: var(--text-muted); white-space: normal; word-break: break-all; overflow-wrap: break-word; }
+.copyright-note {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 6px;
+  margin: 8px 8px 2px;
+  padding: 6px 8px 8px;
+  border-top: 1px dashed var(--border-color);
+  color: var(--text-muted);
+  text-align: left; flex: 1 1 auto; min-width: 0; overflow: hidden;
+  background: linear-gradient(90deg, rgba(82,135,185,0.12), transparent 65%);
+  border-radius: 10px;
+}
+.copyright-title { font-size: .72rem; letter-spacing: .16em; color: var(--text-main); }
+.copyright-body { font-size: .72rem; line-height: 1.6; }
+.copyright-author { font-size: .68rem; letter-spacing: .08em; color: var(--text-muted); text-align: right; }
+.single-layout { display: flex; flex-direction: column; gap: 10px; }
+
+@media (max-width: 600px) {
+  .folder-shell { padding: 10px 10px 12px 40px; }
+  .folder-header { flex-direction: column; align-items: stretch; }
+  .tab-rail { justify-content: flex-start; }
+  .daily-grid, .body-top, .body-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="status-panel" data-theme="light">
+<div class="folder-shell">
+
+  <header class="folder-header">
+    <div class="time-chip">
+      <span class="time-label">TIME</span>
+      <span class="time-value"><span class="value" data-var="系统.时间">—</span></span>
+    </div>
+    <div class="brand-block">
+      <span class="brand-code">档案 LQ-07</span>
+      <span class="brand-title">林清弦</span>
+      <span class="brand-meta">光华大学 · 百年校庆</span>
+    </div>
+    <div class="header-actions">
+      <button class="ctrl-btn theme-btn" title="切换明暗">🌙</button>
+      <button class="ctrl-btn collapse-btn" title="收起/展开"><span class="collapse-arrow">▲</span></button>
+    </div>
+  </header>
+
+  <nav class="tab-rail">
+    <button class="tab-btn active" data-tab="daily"><span class="tab-icon">📋</span>日常</button>
+    <button class="tab-btn" data-tab="body"><span class="tab-icon">💫</span>身体</button>
+    <button class="tab-btn" data-tab="shen"><span class="tab-icon">🔍</span>沈景明</button>
+  </nav>
+
+  <div class="panel-body">
+
+    <!-- ====== 日常 ====== -->
+    <div class="panel active" id="panel-daily">
+      <div class="daily-grid">
+        <div class="col">
+          <div class="info-block">
+            <div class="block-title">场景</div>
+            <div class="block-content">
+              <div class="info-row"><span class="label">地点</span><span class="leader"></span><span class="value"><span class="value" data-var="系统.地点">—</span></span></div>
+              <div class="info-row"><span class="label">时间</span><span class="leader"></span><span class="value"><span class="value" data-var="系统.时间">—</span></span></div>
+              <div class="info-row"><span class="label">在场</span><span class="leader"></span><span class="value"><span class="value" data-var="系统.在场人物">—</span></span></div>
+            </div>
+          </div>
+          <div class="info-block thought-block" style="margin-top:10px">
+            <div class="block-title">内心</div>
+            <div class="block-content">
+              <div><span class="value" data-var="林清弦.当前想法">—</span></div>
+              <div class="goal-line"><span class="goal-label">短期 · </span><span class="value" data-var="林清弦.短期目标">—</span></div>
+              <div class="goal-line"><span class="goal-label">长期 · </span><span class="value" data-var="林清弦.长期目标">—</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="info-block">
+            <div class="block-title">状态数值</div>
+            <div class="block-content">
+              <div class="info-row"><span class="label">好感度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.好感度">—</span></span></div>
+              <div class="info-row"><span class="label">堕落值</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.堕落值">—</span></span></div>
+              <div class="info-row"><span class="label">做爱次数</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.与user做爱次数">—</span></span></div>
+              <div class="info-row"><span class="label">暴露风险</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.秘密暴露风险值">—</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 身体 ====== -->
+    <div class="panel" id="panel-body">
+      <div class="body-top">
+        <div class="info-block">
+          <div class="block-title">整体状态</div>
+          <div class="block-content">
+            <div class="info-row"><span class="label">整体淫乱度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.整体淫乱度">—</span></span></div>
+          </div>
+        </div>
+        <div class="info-block">
+          <div class="block-title">当前性欲</div>
+          <div class="block-content">
+            <div class="info-row"><span class="label">性欲值</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.当前性欲">—</span></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="body-grid">
+        <div class="info-block part-card">
+          <div class="block-title">胸部</div>
+          <div class="block-content">
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.胸部.开发度">—</span></span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.胸部.状态与标记">—</span></span></div>
+          </div>
+        </div>
+        <div class="info-block part-card">
+          <div class="block-title">阴部</div>
+          <div class="block-content">
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.阴部.开发度">—</span></span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.阴部.状态与标记">—</span></span></div>
+          </div>
+        </div>
+        <div class="info-block part-card">
+          <div class="block-title">阴蒂</div>
+          <div class="block-content">
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.阴蒂.开发度">—</span></span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.阴蒂.状态与标记">—</span></span></div>
+          </div>
+        </div>
+        <div class="info-block part-card">
+          <div class="block-title">子宫</div>
+          <div class="block-content">
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.子宫.开发度">—</span></span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.子宫.状态与标记">—</span></span></div>
+          </div>
+        </div>
+        <div class="info-block part-card">
+          <div class="block-title">后庭</div>
+          <div class="block-content">
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.后庭.开发度">—</span></span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.后庭.状态与标记">—</span></span></div>
+          </div>
+        </div>
+        <div class="info-block part-card">
+          <div class="block-title">口腔</div>
+          <div class="block-content">
+            <div class="info-row"><span class="label">开发度</span><span class="leader"></span><span class="value"><span class="value" data-var="林清弦.身体性器状态.口腔.开发度">—</span></span></div>
+            <div class="info-row"><span class="label">状态</span><span class="leader"></span><span class="value status-text"><span class="value" data-var="林清弦.身体性器状态.口腔.状态与标记">—</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 沈景明 ====== -->
+    <div class="panel" id="panel-shen">
+      <div class="single-layout">
+        <div class="info-block">
+          <div class="block-title">沈景明 · <span class="value" data-var="沈景明.当前状态">—</span></div>
+          <div class="block-content">
+            <div class="info-row"><span class="label">怀疑度</span><span class="leader"></span><span class="value"><span class="value" data-var="沈景明.怀疑度">—</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="copyright-note">
+    <span class="copyright-title">免费声明 · 禁止商用</span>
+    <span class="copyright-body">这张角色卡是免费的，永远禁止商业化行为。如果你是购买获得，请立即退款并向购买平台举报贩卖者，维护创作者和您自身的权益。</span>
+    <span class="copyright-author">作者 Cowork 3P</span>
+  </footer>
+
+</div>
+</div>
+
+
+
+<script>
+(function(){
+  // === UI Interaction ===
+  var tabs=document.querySelectorAll('.tab-btn');
+  var panels=document.querySelectorAll('.panel');
+  var panel=document.querySelector('.status-panel');
+  var themeBtn=document.querySelector('.theme-btn');
+  var collapseBtn=document.querySelector('.collapse-btn');
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){
+      tabs.forEach(function(b){b.classList.remove('active');});
+      t.classList.add('active');
+      panels.forEach(function(p){p.classList.remove('active');});
+      document.getElementById('panel-'+t.dataset.tab).classList.add('active');
+    });
+  });
+  themeBtn.addEventListener('click',function(){
+    var cur=panel.getAttribute('data-theme');
+    panel.setAttribute('data-theme',cur==='dark'?'light':'dark');
+    themeBtn.textContent=cur==='dark'?'🌙':'☀️';
+  });
+  collapseBtn.addEventListener('click',function(){
+    panel.classList.toggle('collapsed');
+  });
+
+  // === Variable Data Injection ===
+  function getVar(obj, path, fallback) {
+    fallback = fallback || '—';
+    var keys = path.split('.');
+    var current = obj;
+    for (var i = 0; i < keys.length; i++) {
+      if (current == null || typeof current !== 'object') return fallback;
+      if (!(keys[i] in current)) return fallback;
+      current = current[keys[i]];
+    }
+    if (current == null) return fallback;
+    if (Array.isArray(current)) return current.join(', ');
+    return current;
+  }
+
+  async function renderVars() {
+    try {
+      var msgId = getCurrentMessageId();
+      var msgs = await getChatMessages(msgId);
+      if (!msgs || !msgs.length || !msgs[0].data || !msgs[0].data.stat_data) {
+        console.warn('[StatusBar] stat_data not found');
+        return;
+      }
+      var stat = msgs[0].data.stat_data;
+
+      var els = document.querySelectorAll('[data-var]');
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        var path = el.getAttribute('data-var');
+        var val = getVar(stat, path, '—');
+        el.textContent = val;
+      }
+    } catch(e) {
+      console.error('[StatusBar] renderVars error:', e);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderVars);
+  } else {
+    renderVars();
+  }
+})();
+</script>
