@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>慕清澜 · 互动选项</title>
+<style>
+/* ===== CSS Variables: Light Theme ===== */
+:root {
+  --bg: #f5f0e8;
+  --bg-card: #faf7f2;
+  --bg-card-alt: #f0ebe0;
+  --bg-folder: #ede6d9;
+  --bg-btn: #faf7f2;
+  --bg-btn-hover: #f0ebe0;
+  --text: #3d3226;
+  --text-secondary: #6b5d4f;
+  --text-muted: #9b8d7f;
+  --grid-color: #d9cdb8;
+  --grid-light: #e8e0d0;
+  --border: #c4b5a0;
+  --border-light: #d9cdb8;
+  --accent: #8b5e3c;
+  --accent-hover: #6b3f2a;
+  --accent-light: #c4956a;
+  --staple: #8b7355;
+  --staple-ring: #b09878;
+  --divider: #d4c5b2;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.12);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.15);
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --font: 'STSong', 'Songti SC', 'Noto Serif SC', 'SimSun', 'FangSong', 'KaiTi', 'Microsoft YaHei', serif;
+  --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'SimHei', monospace;
+  --transition: 0.25s ease;
+}
+
+/* ===== CSS Variables: Dark Theme ===== */
+.dark {
+  --bg: #1a1a2e;
+  --bg-card: #22223a;
+  --bg-card-alt: #1e1e35;
+  --bg-folder: #1c1c32;
+  --bg-btn: #22223a;
+  --bg-btn-hover: #2a2a48;
+  --text: #d4c5b2;
+  --text-secondary: #a09080;
+  --text-muted: #706558;
+  --grid-color: #252540;
+  --grid-light: #1e1e38;
+  --border: #35355a;
+  --border-light: #2a2a4a;
+  --accent: #c4956a;
+  --accent-hover: #d4a87a;
+  --accent-light: #a07850;
+  --staple: #6b5d4f;
+  --staple-ring: #4a3f35;
+  --divider: #35355a;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.5);
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--transition), color var(--transition);
+  min-height: 100vh;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ===== Folder Card ===== */
+.folder-card {
+  position: relative;
+  max-width: 620px;
+  margin: 16px auto;
+  background: var(--bg-folder);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+/* Grid lines on folder surface */
+.folder-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 23px, var(--grid-color) 23px, var(--grid-color) 24px),
+    repeating-linear-gradient(90deg, transparent, transparent 23px, var(--grid-light) 23px, var(--grid-light) 24px);
+  opacity: 0.5;
+}
+
+/* ===== Folder Tab (top) ===== */
+.folder-tab {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 20px;
+  background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-card-alt) 100%);
+  border-bottom: 2px solid var(--border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.folder-tab::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light), transparent 60%);
+  z-index: 1;
+}
+
+.tab-title {
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: var(--text);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.tab-title .icon { font-size: 1.1rem; line-height: 1; }
+
+.tab-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.btn-icon {
+  width: 30px; height: 30px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.95rem;
+  transition: all var(--transition);
+  line-height: 1;
+}
+.btn-icon:hover { background: var(--bg-card-alt); color: var(--text); border-color: var(--text-muted); }
+.btn-icon:active { transform: scale(0.95); }
+
+/* ===== Content Body ===== */
+.card-body {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ===== Empty State ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 36px 20px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.empty-state .empty-icon {
+  font-size: 2rem;
+  line-height: 1;
+  opacity: 0.6;
+}
+
+.empty-state .empty-text {
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+/* ===== Options List ===== */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+}
+
+/* ===== Option Button ===== */
+.option-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  font-family: var(--font);
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--bg-btn);
+  border: 1px solid var(--border-light);
+  border-left: 3px solid var(--accent-light);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.option-btn:hover {
+  background: var(--bg-btn-hover);
+  border-left-color: var(--accent);
+  border-left-width: 4px;
+  box-shadow: var(--shadow-md);
+  transform: translateX(2px);
+  color: var(--text);
+}
+
+.option-btn:active {
+  transform: translateX(1px) scale(0.985);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.1s ease;
+}
+
+/* Option number badge */
+.option-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  min-width: 22px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: bold;
+  font-family: var(--font-mono);
+  opacity: 0.8;
+  transition: all var(--transition);
+}
+
+.option-btn:hover .option-num {
+  background: var(--accent);
+  opacity: 1;
+}
+
+/* Option text */
+.option-label {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ===== Copied Toast ===== */
+.copy-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: var(--text);
+  color: var(--bg);
+  padding: 10px 24px;
+  border-radius: var(--radius-md);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-lg);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.copy-toast.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ===== Shuffle Button ===== */
+.shuffle-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+}
+
+.btn-shuffle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 22px;
+  font-family: var(--font);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all var(--transition);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-shuffle:hover {
+  color: var(--text);
+  border-color: var(--accent-light);
+  background: var(--bg-card-alt);
+  border-style: solid;
+}
+
+.btn-shuffle:active {
+  transform: scale(0.96);
+}
+
+.btn-shuffle .shuffle-icon {
+  display: inline-block;
+  transition: transform 0.4s ease;
+  font-size: 0.95rem;
+}
+
+.btn-shuffle:hover .shuffle-icon {
+  transform: rotate(180deg);
+}
+
+/* ===== Footer ===== */
+.footer-bar {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  padding: 10px 20px 12px;
+  border-top: 1px solid var(--divider);
+  letter-spacing: 0.03em;
+  position: relative;
+  z-index: 1;
+  line-height: 1.7;
+  transition: border-color var(--transition);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 640px) {
+  .folder-card { margin: 8px; border-radius: var(--radius-md); }
+
+  .folder-tab { padding: 8px 14px; }
+  .tab-title { font-size: 0.95rem; }
+
+  .card-body { padding: 14px 12px; gap: 8px; }
+
+  .option-btn { padding: 10px 14px; font-size: 0.9rem; }
+  .option-btn:hover { transform: translateX(1px); }
+
+  .options-list { gap: 8px; }
+}
+
+@media (max-width: 380px) {
+  .folder-tab { flex-wrap: wrap; gap: 6px; }
+  .tab-title { font-size: 0.88rem; }
+  .option-btn { padding: 8px 12px; font-size: 0.85rem; }
+  .footer-bar { font-size: 0.65rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="folder-card" id="folderCard">
+  <!-- Folder Tab (Header) -->
+  <div class="folder-tab">
+    <div class="tab-title">
+      <span class="icon">📋</span> 慕清澜 · 互动选项
+    </div>
+    <div class="tab-actions">
+      <button class="btn-icon" id="themeToggle" title="切换亮色/暗色主题" aria-label="切换主题">
+        <span id="themeIcon">🌙</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Options Body -->
+  <div class="card-body" id="optionsBody">
+    <!-- Filled by JS -->
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-bar">
+    免费声明 · 禁止商用<br>— 作者 emo的lsp —
+  </div>
+</div>
+
+<!-- Copied Toast -->
+<div class="copy-toast" id="copyToast"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ==============================
+     DOM References
+     ============================== */
+  const folderCard = document.getElementById('folderCard');
+  const optionsBody = document.getElementById('optionsBody');
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const copyToast = document.getElementById('copyToast');
+
+  /* ==============================
+     State
+     ============================== */
+  var currentOptions = [];   // Original parsed options array
+  var shuffledOptions = [];  // Current display order
+  var darkMode = false;
+
+  /* ==============================
+     Theme Management
+     ============================== */
+
+  function applyTheme(isDark) {
+    darkMode = isDark;
+    if (isDark) {
+      folderCard.classList.add('dark');
+      themeIcon.textContent = '☀️';
+      themeToggle.title = '切换亮色主题';
+    } else {
+      folderCard.classList.remove('dark');
+      themeIcon.textContent = '🌙';
+      themeToggle.title = '切换暗色主题';
+    }
+  }
+
+  function detectSystemTheme() {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function initTheme() {
+    var stored;
+    try {
+      // Check multiple keys for compatibility
+      stored = localStorage.getItem('mushang-theme') || localStorage.getItem('muqinglan-dark');
+    } catch (e) {
+      stored = null;
+    }
+
+    if (stored === 'dark' || stored === '1') {
+      applyTheme(true);
+    } else if (stored === 'light' || stored === '0') {
+      applyTheme(false);
+    } else {
+      applyTheme(detectSystemTheme());
+    }
+  }
+
+  function toggleTheme() {
+    applyTheme(!darkMode);
+    try {
+      localStorage.setItem('mushang-theme', darkMode ? 'dark' : 'light');
+      localStorage.setItem('muqinglan-dark', darkMode ? '1' : '0');
+    } catch (e) { /* ignore */ }
+  }
+
+  themeToggle.addEventListener('click', toggleTheme);
+
+  // Listen for system theme changes
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+      // Only follow system if user hasn't explicitly set a preference
+      var hasStored;
+      try {
+        hasStored = localStorage.getItem('mushang-theme') || localStorage.getItem('muqinglan-dark');
+      } catch (ex) {
+        hasStored = null;
+      }
+      if (!hasStored) {
+        applyTheme(e.matches);
+      }
+    });
+  }
+
+  /* ==============================
+     Data Fetching
+     ============================== */
+
+  function parseOptionsJson(text) {
+    if (!text || typeof text !== 'string') return null;
+    var trimmed = text.trim();
+    if (!trimmed) return null;
+    try {
+      var parsed = JSON.parse(trimmed);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Validate each entry has "text" and "action"
+        var valid = parsed.filter(function(item) {
+          return item && typeof item.text === 'string' && typeof item.action === 'string';
+        });
+        return valid.length > 0 ? valid : null;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function findOptionsInDOM() {
+    // Try to find <options> elements in the current document
+    var optElements = document.querySelectorAll('options');
+    if (optElements && optElements.length > 0) {
+      // Get the last (most recent) one
+      var last = optElements[optElements.length - 1];
+      var text = last.textContent || last.innerText || '';
+      var parsed = parseOptionsJson(text);
+      if (parsed) return parsed;
+    }
+
+    // Try parent document if we're in an iframe
+    try {
+      if (window.parent && window.parent.document && window.parent !== window) {
+        var parentOpts = window.parent.document.querySelectorAll('options');
+        if (parentOpts && parentOpts.length > 0) {
+          var lastParent = parentOpts[parentOpts.length - 1];
+          var parentText = lastParent.textContent || lastParent.innerText || '';
+          var parentParsed = parseOptionsJson(parentText);
+          if (parentParsed) return parentParsed;
+        }
+      }
+    } catch (e) {
+      // Cross-origin access denied — expected in some setups
+    }
+
+    return null;
+  }
+
+  function findOptionsInStorage() {
+    try {
+      var keys = ['mushang-options-cache', 'muqinglan-options', 'mu-options-data'];
+      for (var i = 0; i < keys.length; i++) {
+        var raw = localStorage.getItem(keys[i]);
+        var parsed = parseOptionsJson(raw);
+        if (parsed) return parsed;
+      }
+    } catch (e) { /* ignore */ }
+    return null;
+  }
+
+  function loadOptions() {
+    // Strategy 1: Find <options> tags in DOM
+    var domOptions = findOptionsInDOM();
+    if (domOptions) {
+      // Cache to localStorage for future use
+      try {
+        localStorage.setItem('mushang-options-cache', JSON.stringify(domOptions));
+      } catch (e) { /* ignore */ }
+      return domOptions;
+    }
+
+    // Strategy 2: Load from localStorage cache
+    var storedOptions = findOptionsInStorage();
+    if (storedOptions) {
+      return storedOptions;
+    }
+
+    return null;
+  }
+
+  /* ==============================
+     Shuffle
+     ============================== */
+
+  function shuffleArray(arr) {
+    var result = arr.slice();
+    var i = result.length;
+    while (i > 0) {
+      var j = Math.floor(Math.random() * i);
+      i--;
+      var tmp = result[i];
+      result[i] = result[j];
+      result[j] = tmp;
+    }
+    return result;
+  }
+
+  function doShuffle() {
+    if (currentOptions.length === 0) return;
+    shuffledOptions = shuffleArray(currentOptions);
+    renderOptions();
+  }
+
+  /* ==============================
+     Send Message / Clipboard
+     ============================== */
+
+  function trySendMessage(actionText) {
+    // SillyTavern exposes sendMessage as a global function
+    // Try multiple access patterns
+
+    // Pattern 1: Direct global (same window — $('body').load() case)
+    if (typeof sendMessage === 'function') {
+      sendMessage(actionText);
+      return true;
+    }
+
+    // Pattern 2: Parent window (iframe case)
+    try {
+      if (window.parent && window.parent !== window && typeof window.parent.sendMessage === 'function') {
+        window.parent.sendMessage(actionText);
+        return true;
+      }
+    } catch (e) { /* cross-origin */ }
+
+    // Pattern 3: SillyTavern global object
+    try {
+      var ST = window.SillyTavern || (window.parent && window.parent.SillyTavern);
+      if (ST && typeof ST.sendMessage === 'function') {
+        ST.sendMessage(actionText);
+        return true;
+      }
+    } catch (e) { /* ignore */ }
+
+    // Pattern 4: postMessage to parent
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'send', message: actionText }, '*');
+        return true;
+      }
+    } catch (e) { /* ignore */ }
+
+    return false;
+  }
+
+  function copyToClipboard(text) {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      navigator.clipboard.writeText(text).then(function() {
+        showToast('已复制到剪贴板');
+      }).catch(function() {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      showToast('已复制到剪贴板');
+    } catch (e) {
+      showToast('复制失败，请手动输入');
+    }
+    document.body.removeChild(textarea);
+  }
+
+  function showToast(message) {
+    copyToast.textContent = message;
+    copyToast.classList.add('show');
+    clearTimeout(copyToast._timeout);
+    copyToast._timeout = setTimeout(function() {
+      copyToast.classList.remove('show');
+    }, 1800);
+  }
+
+  function handleOptionClick(actionText, labelText) {
+    var sent = trySendMessage(actionText);
+    if (!sent) {
+      // Fallback: copy to clipboard
+      copyToClipboard(actionText);
+    }
+  }
+
+  /* ==============================
+     Rendering
+     ============================== */
+
+  function renderEmpty() {
+    optionsBody.innerHTML = ''
+      + '<div class="empty-state">'
+      + '  <span class="empty-icon">📭</span>'
+      + '  <span class="empty-text">暂无选项</span>'
+      + '</div>';
+  }
+
+  function renderOptions() {
+    var opts = shuffledOptions.length > 0 ? shuffledOptions : currentOptions;
+
+    if (!opts || opts.length === 0) {
+      renderEmpty();
+      return;
+    }
+
+    var listHtml = '<div class="options-list">';
+    for (var i = 0; i < opts.length; i++) {
+      var item = opts[i];
+      var num = i + 1;
+      // Escape HTML in text content
+      var safeText = escapeHtml(item.text);
+      listHtml += ''
+        + '<button class="option-btn" data-index="' + i + '" data-action="' + escapeAttr(item.action) + '">'
+        + '  <span class="option-num">' + num + '</span>'
+        + '  <span class="option-label">' + safeText + '</span>'
+        + '</button>';
+    }
+    listHtml += '</div>';
+
+    // Shuffle button
+    listHtml += ''
+      + '<div class="shuffle-wrap">'
+      + '  <button class="btn-shuffle" id="btnShuffle">'
+      + '    <span class="shuffle-icon">🔄</span> 换一批'
+      + '  </button>'
+      + '</div>';
+
+    optionsBody.innerHTML = listHtml;
+
+    // Attach click handlers
+    var buttons = optionsBody.querySelectorAll('.option-btn');
+    for (var b = 0; b < buttons.length; b++) {
+      buttons[b].addEventListener('click', function() {
+        var action = this.getAttribute('data-action');
+        handleOptionClick(action);
+      });
+    }
+
+    // Attach shuffle handler
+    var shuffleBtn = document.getElementById('btnShuffle');
+    if (shuffleBtn) {
+      shuffleBtn.addEventListener('click', function() {
+        // Re-spin animation
+        var icon = this.querySelector('.shuffle-icon');
+        if (icon) {
+          icon.style.transform = 'rotate(360deg)';
+          setTimeout(function() {
+            icon.style.transform = '';
+          }, 400);
+        }
+        doShuffle();
+      });
+    }
+  }
+
+  /* ==============================
+     HTML Escaping Helpers
+     ============================== */
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+
+  function escapeAttr(str) {
+    return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  /* ==============================
+     Bootstrap
+     ============================== */
+
+  function init() {
+    initTheme();
+
+    // Load options data
+    var options = loadOptions();
+    if (options) {
+      currentOptions = options;
+      shuffledOptions = options.slice(); // Preserve original order on first load
+    } else {
+      currentOptions = [];
+      shuffledOptions = [];
+    }
+
+    renderOptions();
+  }
+
+  // Ready: support both jQuery ready and DOM ready
+  function onReady(fn) {
+    if (typeof $ !== 'undefined' && typeof $.fn !== 'undefined') {
+      $(fn);
+    } else if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fn);
+    } else {
+      fn();
+    }
+  }
+
+  onReady(init);
+
+})();
+</script>
+
+</body>
+</html>
