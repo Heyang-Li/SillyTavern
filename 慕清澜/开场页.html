@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>慕清澜 Ver1.0 · 开场页</title>
+<style>
+/* ===== CSS Variables ===== */
+:root {
+  --bg: #f5f0e8;
+  --bg-card: #faf7f2;
+  --bg-card-alt: #f0ebe0;
+  --bg-seal: #e8dfd2;
+  --spine: #5c4a3a;
+  --spine-light: #7a6550;
+  --spine-text: #d4c5b0;
+  --text: #3d3226;
+  --text-secondary: #6b5d4f;
+  --text-muted: #9b8d7f;
+  --grid-color: #d9cdb8;
+  --grid-light: #e8e0d0;
+  --border: #c4b5a0;
+  --border-light: #d9cdb8;
+  --staple: #8b7355;
+  --staple-ring: #b09878;
+  --accent: #8b5e3c;
+  --accent-soft: #c4a882;
+  --rose: #b85450;
+  --rose-soft: #d4a0a0;
+  --ink-blue: #3a5a7c;
+  --gold: #a08050;
+  --tag-red: #c0392b;
+  --tag-rose: #b85450;
+  --tag-gold: #a08050;
+  --tag-purple-bg: #f0e8f0;
+  --divider: #d4c5b2;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.12);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.15);
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --font: 'STSong', 'Songti SC', 'Noto Serif SC', 'SimSun', 'FangSong', 'KaiTi', 'Microsoft YaHei', serif;
+  --font-display: 'STSong', 'Songti SC', 'Noto Serif SC', 'SimSun', 'KaiTi', serif;
+  --transition: 0.25s ease;
+}
+
+/* ===== Dark Theme ===== */
+.dark {
+  --bg: #1a1a2e;
+  --bg-card: #22223a;
+  --bg-card-alt: #1e1e35;
+  --bg-seal: #1c1c32;
+  --spine: #0f0f23;
+  --spine-light: #1a1a35;
+  --spine-text: #8b7d6b;
+  --text: #d4c5b2;
+  --text-secondary: #a09080;
+  --text-muted: #706558;
+  --grid-color: #252540;
+  --grid-light: #1e1e38;
+  --border: #35355a;
+  --border-light: #2a2a4a;
+  --staple: #6b5d4f;
+  --staple-ring: #4a3f35;
+  --accent: #9b8b7a;
+  --accent-soft: #6b5d4f;
+  --rose: #c08080;
+  --rose-soft: #7a5a5a;
+  --ink-blue: #6080a0;
+  --gold: #8b7a60;
+  --tag-purple-bg: #2a2030;
+  --divider: #35355a;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.5);
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--transition), color var(--transition);
+  padding: 20px 12px 40px;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ===== Folder Shell ===== */
+.folder-shell {
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  display: flex;
+  min-height: 420px;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+/* Subtle grid texture */
+.folder-shell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 27px, var(--grid-color) 27px, var(--grid-color) 28px),
+    repeating-linear-gradient(90deg, transparent, transparent 27px, var(--grid-light) 27px, var(--grid-light) 28px);
+  opacity: 0.35;
+}
+
+/* ===== Spine ===== */
+.spine {
+  position: relative;
+  z-index: 2;
+  width: 40px;
+  min-width: 40px;
+  background: linear-gradient(90deg, var(--spine) 0%, var(--spine-light) 55%, var(--spine) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 0;
+  border-right: 2px solid rgba(0,0,0,0.2);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.12);
+}
+
+.spine-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--spine-text);
+  letter-spacing: 0.35em;
+  margin-bottom: auto;
+  user-select: none;
+  font-family: var(--font-display);
+}
+
+.spine-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.spine-dot {
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: var(--staple-ring);
+  border: 2px solid var(--staple);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.25), 0 1px 0 rgba(255,255,255,0.08);
+  position: relative;
+}
+
+.spine-dot::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.18);
+}
+
+/* ===== Content Area ===== */
+.content-area {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  padding: 28px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+}
+
+/* ===== Theme Toggle (top-right corner) ===== */
+.theme-toggle-wrap {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  z-index: 10;
+}
+
+.theme-toggle {
+  width: 34px; height: 34px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  transition: all var(--transition);
+  line-height: 1;
+}
+.theme-toggle:hover { background: var(--bg-card-alt); color: var(--text); border-color: var(--text-muted); }
+.theme-toggle:active { transform: scale(0.94); }
+
+/* ===== Hero / Title Block ===== */
+.hero-block {
+  text-align: center;
+  padding: 8px 0 0;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: var(--text);
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Decorative seal-stamp beside version */
+.hero-title .ver-stamp {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: normal;
+  color: var(--accent-soft);
+  border: 1.5px solid var(--accent-soft);
+  border-radius: 50%;
+  width: 44px; height: 44px;
+  line-height: 42px;
+  text-align: center;
+  vertical-align: middle;
+  margin-left: 8px;
+  letter-spacing: 0;
+  transform: rotate(8deg);
+  font-family: var(--font-display);
+}
+
+.hero-subtitle {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.hero-subtitle .sep {
+  color: var(--accent-soft);
+  font-size: 0.7rem;
+}
+
+/* ===== Divider ===== */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent-soft);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--divider);
+}
+
+.section-divider .diamond {
+  font-size: 0.55rem;
+  line-height: 1;
+}
+
+/* ===== Section Block ===== */
+.section-block {
+  background: transparent;
+  position: relative;
+}
+
+.section-heading {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: var(--text);
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-heading .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ===== Story Synopsis ===== */
+.synopsis-text {
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: var(--text);
+  text-indent: 2em;
+  padding: 0 4px;
+}
+
+/* ===== Character Grid ===== */
+.char-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.char-card {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: background var(--transition), border-color var(--transition), transform 0.2s ease;
+}
+
+.char-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.char-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--divider);
+  font-weight: bold;
+  font-size: 0.98rem;
+  color: var(--text);
+}
+
+.char-card-header .ch-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.char-card-body {
+  padding: 12px 16px 16px;
+}
+
+.char-card-body p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.char-card-body .stage-line {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dotted var(--border-light);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.stage-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 3px;
+  color: #fff;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* ===== Gameplay Hints ===== */
+.hint-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hint-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.hint-item:hover {
+  border-color: var(--accent-soft);
+}
+
+.hint-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.hint-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ===== Easter Egg Section ===== */
+.egg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.egg-card {
+  position: relative;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 18px 14px 14px;
+  cursor: default;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  text-align: center;
+}
+
+.egg-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-soft);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+
+.egg-card:hover::before {
+  transform: scaleX(1);
+}
+
+.egg-card:hover {
+  background: var(--bg-card);
+  border-color: var(--accent-soft);
+  box-shadow: var(--shadow-md);
+}
+
+.egg-num {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.egg-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+
+.egg-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.3s ease;
+  line-height: 1.5;
+}
+
+.egg-card:hover .egg-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* The locked/classified feel */
+.egg-card .classified-stamp {
+  position: absolute;
+  top: 8px; right: 8px;
+  font-size: 0.55rem;
+  color: var(--rose-soft);
+  border: 1px solid var(--rose-soft);
+  padding: 1px 5px;
+  border-radius: 2px;
+  transform: rotate(-6deg);
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+}
+
+/* ===== Footer ===== */
+.footer-block {
+  text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--divider);
+}
+
+.footer-disclaimer {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+}
+
+.footer-disclaimer em {
+  font-style: normal;
+  color: var(--rose-soft);
+}
+
+.footer-author {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.footer-version {
+  margin-top: 4px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 700px) {
+  html { font-size: 14px; }
+  body { padding: 8px 4px 24px; }
+
+  .folder-shell {
+    flex-direction: column;
+    border-radius: var(--radius-md);
+  }
+
+  .spine {
+    width: 100%; min-width: unset; height: 30px;
+    flex-direction: row;
+    padding: 0 14px;
+    border-right: none;
+    border-bottom: 2px solid rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+
+  .spine-label {
+    writing-mode: horizontal-tb;
+    font-size: 0.82rem;
+    letter-spacing: 0.18em;
+    margin-bottom: 0;
+    margin-right: auto;
+  }
+
+  .spine-dots {
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 0;
+  }
+
+  .spine-dot { width: 10px; height: 10px; }
+
+  .content-area {
+    padding: 20px 16px 24px;
+    gap: 20px;
+  }
+
+  .hero-title { font-size: 1.7rem; }
+  .hero-title .ver-stamp { width: 36px; height: 36px; line-height: 34px; font-size: 0.58rem; }
+
+  .char-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .egg-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .theme-toggle-wrap {
+    top: 10px;
+    right: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .egg-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-title { font-size: 1.4rem; }
+  .hero-subtitle { font-size: 0.78rem; flex-wrap: wrap; gap: 4px; }
+  .content-area { padding: 16px 10px 18px; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="folder-shell">
+
+  <!-- Spine -->
+  <div class="spine">
+    <div class="spine-label">慕清澜 · 开场档案</div>
+    <div class="spine-dots">
+      <div class="spine-dot"></div>
+      <div class="spine-dot"></div>
+      <div class="spine-dot"></div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content-area">
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle-wrap">
+      <button class="theme-toggle" id="themeToggle" title="切换亮色/暗色主题" aria-label="切换主题">🌙</button>
+    </div>
+
+    <!-- Hero / Title -->
+    <div class="hero-block">
+      <div class="hero-title">
+        慕清澜
+        <span class="ver-stamp">Ver1.0</span>
+      </div>
+      <div class="hero-subtitle">
+        <span>禁忌熟母</span>
+        <span class="sep">·</span>
+        <span>旧爱复燃</span>
+        <span class="sep">·</span>
+        <span>母女争夺</span>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="section-divider"><span class="diamond">◆</span></div>
+
+    <!-- Story Synopsis -->
+    <div class="section-block">
+      <div class="section-heading"><span class="dot"></span>故事简介</div>
+      <p class="synopsis-text">
+        慕清澜曾是你的大学恋人，因现实压力被迫分手嫁人。十九年后，你功成名就归来，你新交的女友林雅带你回家见妈妈——她的妈妈正是你此生最难忘的女人。压抑的旧爱、病态的占有欲、母女的暗中争夺，一场禁忌的修罗场就此拉开帷幕。
+      </p>
+    </div>
+
+    <!-- Divider -->
+    <div class="section-divider"><span class="diamond">◆</span></div>
+
+    <!-- Character Introductions -->
+    <div class="section-block">
+      <div class="section-heading"><span class="dot"></span>角色介绍</div>
+      <div class="char-grid">
+
+        <!-- 慕清澜 -->
+        <div class="char-card">
+          <div class="char-card-header">
+            <span class="ch-icon">🧵</span> 慕清澜
+          </div>
+          <div class="char-card-body">
+            <p>40岁，保养极好看似二十七八。端庄贤淑的完美母亲，内心却藏着对前男友不灭的痴恋。十九年的婚姻平淡如水，直到你再次出现——她苦心维持的一切开始崩塌。</p>
+            <div class="stage-line">
+              阶段轨迹：
+              <span class="stage-badge" style="background:#c0392b;">愧疚</span>
+              <span style="color:var(--text-muted);">→</span>
+              <span class="stage-badge" style="background:#e67e22;">无法接受</span>
+              <span style="color:var(--text-muted);">→</span>
+              <span class="stage-badge" style="background:#2980b9;">接受</span>
+              <span style="color:var(--text-muted);">→</span>
+              <span class="stage-badge" style="background:#8e44ad;">沉沦</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 林雅 -->
+        <div class="char-card">
+          <div class="char-card-header">
+            <span class="ch-icon">🎀</span> 林雅（小雅）
+          </div>
+          <div class="char-card-body">
+            <p>17岁，慕清澜的女儿。天真纯洁的高中女生，在咖啡馆邂逅成熟稳重的你并坠入爱河。她不知道，自己爱上的男人，正是母亲埋藏十九年的秘密。</p>
+            <div class="stage-line">
+              阶段轨迹：
+              <span class="stage-badge" style="background:#27ae60;">懵懂</span>
+              <span style="color:var(--text-muted);">→</span>
+              <span class="stage-badge" style="background:#e67e22;">震惊</span>
+              <span style="color:var(--text-muted);">→</span>
+              <span class="stage-badge" style="background:#2980b9;">接受</span>
+              <span style="color:var(--text-muted);">→</span>
+              <span class="stage-badge" style="background:#8e44ad;">沉沦</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- User -->
+        <div class="char-card">
+          <div class="char-card-header">
+            <span class="ch-icon">👤</span> {{user}}
+          </div>
+          <div class="char-card-body">
+            <p>你本人。千亿身家，阅人无数，却此生只心动过两次——一次是十九年前的慕清澜，一次是此刻的林雅。命运把母女二人同时推到你面前，你会如何抉择？</p>
+            <div class="stage-line">
+              <span style="color:var(--text-muted);">身份：林雅的男友 · 慕清澜的前任</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="section-divider"><span class="diamond">◆</span></div>
+
+    <!-- Gameplay Hints -->
+    <div class="section-block">
+      <div class="section-heading"><span class="dot"></span>玩法提示</div>
+      <ul class="hint-list">
+        <li class="hint-item">
+          <span class="hint-icon">🏠</span>
+          <span class="hint-text"><strong>日常聊天：</strong>与母女二人进行日常生活互动，在平静的表象下感受暗流涌动。每一个眼神、每一次触碰，都可能成为导火索。</span>
+        </li>
+        <li class="hint-item">
+          <span class="hint-icon">🕯️</span>
+          <span class="hint-text"><strong>暗中挑逗：</strong>在丈夫和女儿的眼皮底下，试探慕清澜的底线。厨房里不经意的擦肩、客厅里意味深长的对视——越危险，越甜蜜。</span>
+        </li>
+        <li class="hint-item">
+          <span class="hint-icon">💢</span>
+          <span class="hint-text"><strong>刺激嫉妒：</strong>用对女儿的亲密举动刺激慕清澜，或用对母亲的特别关注刺激林雅。嫉妒是最好的催化剂，但小心——火烧得太旺会失控。</span>
+        </li>
+        <li class="hint-item">
+          <span class="hint-icon">⚔️</span>
+          <span class="hint-text"><strong>母女修罗场：</strong>当秘密被揭开，母女同时知晓真相，三人之间的关系将进入最激烈的冲突阶段。两难的抉择、撕扯的情感——修罗场的结局由你书写。</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Divider -->
+    <div class="section-divider"><span class="diamond">◆</span></div>
+
+    <!-- Hidden Easter Eggs -->
+    <div class="section-block">
+      <div class="section-heading"><span class="dot"></span>隐藏彩蛋</div>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;line-height:1.6;">
+        以下为角色卡内置的隐藏事件，达成特定条件后自动触发。将鼠标悬停在卡片上查看触发提示。
+      </p>
+      <div class="egg-grid">
+
+        <div class="egg-card">
+          <div class="classified-stamp">CLASSIFIED</div>
+          <div class="egg-num">NO. 01</div>
+          <div class="egg-name">深夜思念</div>
+          <div class="egg-hint">慕清澜深夜独自回忆大学时光，被你撞见。触发条件：夜间场景 + 慕清澜好感 ≥ 60</div>
+        </div>
+
+        <div class="egg-card">
+          <div class="classified-stamp">CLASSIFIED</div>
+          <div class="egg-num">NO. 02</div>
+          <div class="egg-name">厨房偷情</div>
+          <div class="egg-hint">丈夫在客厅看电视，你和慕清澜在厨房里擦枪走火。触发条件：丈夫在场 + 慕清澜堕落值 ≥ 40</div>
+        </div>
+
+        <div class="egg-card">
+          <div class="classified-stamp">CLASSIFIED</div>
+          <div class="egg-num">NO. 03</div>
+          <div class="egg-name">嫉妒爆发</div>
+          <div class="egg-hint">慕清澜看到你和林雅亲密的画面，情绪失控。触发条件：母女同时在场 + 母性嫉妒值 ≥ 80</div>
+        </div>
+
+        <div class="egg-card">
+          <div class="classified-stamp">CLASSIFIED</div>
+          <div class="egg-num">NO. 04</div>
+          <div class="egg-name">怀孕旧梦</div>
+          <div class="egg-hint">慕清澜透露十九年前曾怀过你的孩子。触发条件：慕清澜阶段 = 接受或沉沦 + 深夜独处</div>
+        </div>
+
+        <div class="egg-card">
+          <div class="classified-stamp">CLASSIFIED</div>
+          <div class="egg-num">NO. 05</div>
+          <div class="egg-name">母女修罗</div>
+          <div class="egg-hint">母女同时知晓真相，三人面对面的终极对峙。触发条件：林雅阶段 ≥ 接受 + 慕清澜阶段 ≥ 接受</div>
+        </div>
+
+        <div class="egg-card">
+          <div class="classified-stamp">CLASSIFIED</div>
+          <div class="egg-num">NO. 06</div>
+          <div class="egg-name">丝袜束缚</div>
+          <div class="egg-hint">慕清澜用丝袜把你绑在床头，主动掌控一切。触发条件：慕清澜阶段 = 沉沦 + 私密场景 + 堕落值 ≥ 120</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-block">
+      <p class="footer-disclaimer">
+        <em>免费声明 · 禁止商用</em> —— 这张角色卡是免费的，永远禁止商业化行为。<br>
+        如果你是购买获得，请立即退款并向购买平台举报贩卖者。
+      </p>
+      <p class="footer-author">作者 emo的lsp</p>
+      <p class="footer-version">慕清澜 Ver1.0 · SillyTavern 角色卡开场页</p>
+    </div>
+
+  </div><!-- /content-area -->
+</div><!-- /folder-shell -->
+
+<script>
+(function() {
+  'use strict';
+
+  var toggleBtn = document.getElementById('themeToggle');
+  var body = document.body;
+  var STORAGE_KEY = 'muqinglan-dark';
+
+  /* Initialize theme from localStorage */
+  function initTheme() {
+    var saved;
+    try {
+      saved = localStorage.getItem(STORAGE_KEY);
+    } catch (e) {
+      saved = null;
+    }
+    if (saved === '1') {
+      body.classList.add('dark');
+      toggleBtn.textContent = '☀️';
+    } else {
+      body.classList.remove('dark');
+      toggleBtn.textContent = '🌙';
+    }
+  }
+
+  /* Toggle theme */
+  function toggleTheme() {
+    var isDark = body.classList.toggle('dark');
+    toggleBtn.textContent = isDark ? '☀️' : '🌙';
+    try {
+      localStorage.setItem(STORAGE_KEY, isDark ? '1' : '0');
+    } catch (e) {}
+  }
+
+  toggleBtn.addEventListener('click', toggleTheme);
+
+  /* Initialize on load */
+  initTheme();
+})();
+</script>
+
+</body>
+</html>

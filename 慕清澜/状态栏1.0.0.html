@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>慕清澜 - 状态档案</title>
+<style>
+/* ===== CSS Variables ===== */
+:root {
+  --bg: #f5f0e8;
+  --bg-card: #faf7f2;
+  --bg-card-alt: #f0ebe0;
+  --bg-folder: #ede6d9;
+  --spine: #5c4a3a;
+  --spine-light: #7a6550;
+  --spine-text: #d4c5b0;
+  --text: #3d3226;
+  --text-secondary: #6b5d4f;
+  --text-muted: #9b8d7f;
+  --grid-color: #d9cdb8;
+  --grid-light: #e8e0d0;
+  --border: #c4b5a0;
+  --border-light: #d9cdb8;
+  --staple: #8b7355;
+  --staple-ring: #b09878;
+  --tag-red: #c0392b;
+  --tag-orange: #e67e22;
+  --tag-blue: #2980b9;
+  --tag-purple: #8e44ad;
+  --tag-green: #27ae60;
+  --tag-yellow: #d4a017;
+  --tag-bg: rgba(0,0,0,0.06);
+  --progress-bg: #e0d5c5;
+  --progress-low: #27ae60;
+  --progress-mid: #f39c12;
+  --progress-high: #e74c3c;
+  --progress-love: #e91e63;
+  --progress-jealous: #9c27b0;
+  --progress-fall: #ff5722;
+  --delta-up: #27ae60;
+  --delta-down: #e74c3c;
+  --delta-same: #95a5a6;
+  --divider: #d4c5b2;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.12);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.15);
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --font: 'STSong', 'Songti SC', 'Noto Serif SC', 'SimSun', 'FangSong', 'KaiTi', 'Microsoft YaHei', serif;
+  --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'SimHei', monospace;
+  --transition: 0.25s ease;
+}
+
+/* ===== Dark Theme ===== */
+.dark {
+  --bg: #1a1a2e;
+  --bg-card: #22223a;
+  --bg-card-alt: #1e1e35;
+  --bg-folder: #1c1c32;
+  --spine: #0f0f23;
+  --spine-light: #1a1a35;
+  --spine-text: #8b7d6b;
+  --text: #d4c5b2;
+  --text-secondary: #a09080;
+  --text-muted: #706558;
+  --grid-color: #252540;
+  --grid-light: #1e1e38;
+  --border: #35355a;
+  --border-light: #2a2a4a;
+  --staple: #6b5d4f;
+  --staple-ring: #4a3f35;
+  --tag-bg: rgba(255,255,255,0.05);
+  --progress-bg: #2a2a48;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.5);
+  --divider: #35355a;
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ===== Folder Shell ===== */
+.folder-shell {
+  position: relative;
+  max-width: 860px;
+  margin: 16px auto;
+  background: var(--bg-folder);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  display: flex;
+  min-height: 420px;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+/* Grid lines on folder surface */
+.folder-shell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 23px, var(--grid-color) 23px, var(--grid-color) 24px),
+    repeating-linear-gradient(90deg, transparent, transparent 23px, var(--grid-light) 23px, var(--grid-light) 24px);
+  opacity: 0.5;
+}
+
+/* ===== Spine ===== */
+.spine {
+  position: relative;
+  z-index: 2;
+  width: 36px;
+  min-width: 36px;
+  background: linear-gradient(90deg, var(--spine) 0%, var(--spine-light) 60%, var(--spine) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
+  border-right: 2px solid rgba(0,0,0,0.2);
+  box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+}
+
+.spine-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: var(--spine-text);
+  letter-spacing: 0.3em;
+  margin-bottom: auto;
+  user-select: none;
+  font-family: var(--font);
+}
+
+.spine-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: auto;
+}
+
+.spine-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--staple-ring);
+  border: 2px solid var(--staple);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.1);
+  position: relative;
+}
+
+.spine-dot::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.2);
+}
+
+/* ===== Content Area ===== */
+.content-area {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* ===== Header ===== */
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.header-title {
+  font-size: 1.35rem;
+  font-weight: bold;
+  color: var(--text);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-title .icon { font-size: 1.2rem; }
+
+.header-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* ===== Buttons ===== */
+.btn-icon {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  transition: all var(--transition);
+  line-height: 1;
+}
+.btn-icon:hover { background: var(--bg-card-alt); color: var(--text); border-color: var(--text-muted); }
+.btn-icon:active { transform: scale(0.95); }
+
+/* ===== Tabs ===== */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0;
+}
+
+.tab-btn {
+  padding: 8px 18px;
+  font-size: 0.92rem;
+  font-family: var(--font);
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: all var(--transition);
+  display: flex; align-items: center; gap: 5px;
+  position: relative;
+  top: 2px;
+}
+
+.tab-btn:hover { color: var(--text); background: var(--bg-card-alt); }
+
+.tab-btn.active {
+  color: var(--text);
+  background: var(--bg-card);
+  border-color: var(--border);
+  border-bottom-color: var(--bg-card);
+  font-weight: bold;
+}
+
+/* ===== Tab Content ===== */
+.tab-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: fadeSlideIn 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Character Card ===== */
+.char-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+  position: relative;
+}
+
+.char-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--divider);
+  background: var(--bg-card-alt);
+  position: relative;
+}
+
+.char-card-icon { font-size: 1.15rem; line-height: 1; }
+
+.char-card-name {
+  font-weight: bold;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.char-card-tag {
+  margin-left: auto;
+  font-size: 0.78rem;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 3px;
+  color: #fff;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  position: relative;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Sticky-note fold corner */
+.char-card-tag::before {
+  content: '';
+  position: absolute;
+  top: 0; right: -6px;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 11px 6px 11px 0;
+  border-color: transparent currentColor transparent transparent;
+  opacity: 0.7;
+}
+
+.char-card-body {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ===== Info Row ===== */
+.info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  font-size: 0.9rem;
+}
+
+.info-label {
+  color: var(--text-secondary);
+  white-space: nowrap;
+  font-weight: 500;
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+.info-dots {
+  flex: 1;
+  min-width: 16px;
+  height: 1em;
+  margin: 0 6px;
+  border-bottom: 1.5px dotted var(--text-muted);
+  opacity: 0.5;
+  align-self: flex-end;
+  margin-bottom: 3px;
+}
+
+.info-value {
+  color: var(--text);
+  white-space: nowrap;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ===== Value Badge (delta indicator) ===== */
+.value-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.delta-tag {
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 1px 5px;
+  border-radius: 3px;
+  line-height: 1.4;
+}
+
+.delta-up { color: var(--delta-up); }
+.delta-down { color: var(--delta-down); }
+.delta-zero { color: var(--delta-same); font-size: 0.7rem; }
+
+/* ===== Progress Bar ===== */
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 60px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 10px;
+  background: var(--progress-bg);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.5s ease, background 0.3s ease;
+  min-width: 0;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(0,0,0,0.1) 100%);
+  border-radius: 5px;
+}
+
+.progress-value {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  min-width: 48px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+}
+
+/* ===== Organ Grid ===== */
+.organ-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.organ-cell {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.organ-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.organ-icon { font-size: 1rem; line-height: 1; }
+
+.organ-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.organ-head .progress-wrap {
+  margin-left: auto;
+  max-width: 100px;
+}
+
+.organ-desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===== Thoughts Block ===== */
+.thoughts-block {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-light);
+  border-left: 3px solid var(--tag-purple);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.thoughts-block::before {
+  content: '💭 ';
+  font-style: normal;
+}
+
+/* ===== Stage Label ===== */
+.stage-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.stage-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ===== Section Title ===== */
+.section-title {
+  font-size: 0.88rem;
+  font-weight: bold;
+  color: var(--text);
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--border);
+  margin-bottom: 2px;
+  letter-spacing: 0.04em;
+}
+
+/* ===== Husband Card ===== */
+.husband-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ===== Footer ===== */
+.footer-bar {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  padding-top: 8px;
+  border-top: 1px solid var(--divider);
+  letter-spacing: 0.03em;
+}
+
+/* ===== Loading / Error / Empty ===== */
+.status-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.status-msg .icon { font-size: 2rem; }
+
+.spinner {
+  width: 28px; height: 28px;
+  border: 3px solid var(--border);
+  border-top-color: var(--tag-blue);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn-retry {
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  transition: all var(--transition);
+}
+.btn-retry:hover { background: var(--bg-card-alt); border-color: var(--text-muted); }
+
+/* ===== Collapsed State ===== */
+.collapsed .tab-bar,
+.collapsed .tab-panel,
+.collapsed .footer-bar { display: none; }
+
+.collapsed .content-area { gap: 0; }
+
+/* ===== Responsive ===== */
+@media (max-width: 640px) {
+  .folder-shell { margin: 8px; border-radius: var(--radius-md); flex-direction: column; }
+
+  .spine {
+    width: 100%; min-width: unset; height: 28px;
+    flex-direction: row;
+    padding: 0 12px;
+    border-right: none;
+    border-bottom: 2px solid rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  .spine-label {
+    writing-mode: horizontal-tb;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 0;
+    margin-right: auto;
+  }
+
+  .spine-dots {
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 0;
+  }
+
+  .spine-dot { width: 10px; height: 10px; }
+
+  .content-area { padding: 14px 12px; gap: 10px; }
+
+  .header-title { font-size: 1.1rem; }
+
+  .tab-btn { padding: 6px 12px; font-size: 0.82rem; }
+
+  .organ-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+
+  .info-label { font-size: 0.82rem; }
+  .info-value { font-size: 0.82rem; }
+}
+
+@media (max-width: 380px) {
+  .organ-grid { grid-template-columns: 1fr; }
+  .tab-bar { flex-wrap: wrap; }
+}
+</style>
+
+<script type="importmap">
+{
+  "imports": {
+    "vue": "https://testingcf.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.js",
+    "pinia": "https://testingcf.jsdelivr.net/npm/pinia@2/dist/pinia.esm-browser.js"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app"></div>
+
+<script type="module">
+import { createApp, ref, computed, onMounted } from 'vue';
+import { createPinia, defineStore } from 'pinia';
+
+/* ==============================
+   Helper Functions
+   ============================== */
+
+function walkDeltas(current, previous, prefix = '') {
+  const result = {};
+  if (!current || !previous) return result;
+  for (const key of Object.keys(current)) {
+    const path = prefix ? `${prefix}.${key}` : key;
+    const cv = current[key];
+    const pv = previous?.[key];
+    if (typeof cv === 'number' && typeof pv === 'number') {
+      const d = cv - pv;
+      if (d !== 0) result[path] = d;
+    } else if (cv && typeof cv === 'object' && !Array.isArray(cv)) {
+      Object.assign(result, walkDeltas(cv, pv || {}, path));
+    }
+  }
+  return result;
+}
+
+function progressColor(val, max = 100) {
+  const pct = val / max;
+  if (pct <= 0.3) return 'var(--progress-low)';
+  if (pct <= 0.7) return 'var(--progress-mid)';
+  return 'var(--progress-high)';
+}
+
+const STAGE_COLORS = {
+  '愧疚': '#c0392b', '无法接受': '#e67e22', '接受': '#2980b9', '沉沦': '#8e44ad',
+  '懵懂': '#27ae60', '震惊': '#e67e22',
+  '正常': '#27ae60', '怀疑': '#d4a017', '决裂': '#c0392b'
+};
+
+function stageTagInfo(stage) {
+  return { label: stage || '', color: STAGE_COLORS[stage] || '#95a5a6' };
+}
+
+function fallLabel(val) {
+  if (val <= 50) return '清明';
+  if (val <= 100) return '朦胧';
+  if (val <= 150) return '沉溺';
+  return '堕落';
+}
+
+function loveLabel(val) {
+  if (val <= 50) return '在意';
+  if (val <= 100) return '依恋';
+  if (val <= 150) return '深爱';
+  return '痴狂';
+}
+
+function jealousyLabel(val) {
+  if (val <= 50) return '平和';
+  if (val <= 100) return '在意';
+  if (val <= 150) return '嫉妒';
+  return '疯狂';
+}
+
+function confuseLabel(val) {
+  if (val <= 50) return '清明';
+  if (val <= 100) return '困惑';
+  if (val <= 150) return '迷茫';
+  return '混沌';
+}
+
+function awareLabel(val) {
+  if (val <= 30) return '未察觉';
+  if (val <= 60) return '隐约怀疑';
+  return '察觉';
+}
+
+const ORGAN_META = [
+  { key: '胸部', icon: '🍑', name: '胸部' },
+  { key: '小穴', icon: '🌸', name: '小穴' },
+  { key: '子宫', icon: '🏺', name: '子宫' },
+  { key: '屁眼', icon: '🕯️', name: '屁眼' },
+  { key: '嘴', icon: '💋', name: '嘴' },
+  { key: '阴蒂', icon: '💎', name: '阴蒂' }
+];
+
+/* ==============================
+   Pinia Store
+   ============================== */
+
+const useStatusStore = defineStore('status', {
+  state: () => ({
+    statData: null,
+    prevStatData: null,
+    loading: false,
+    error: null,
+    activeTab: 'daily',
+    darkMode: false,
+    collapseMain: false,
+  }),
+
+  getters: {
+    deltas(state) {
+      if (!state.statData || !state.prevStatData) return {};
+      return walkDeltas(state.statData, state.prevStatData);
+    },
+
+    hasData: (s) => s.statData !== null,
+
+    muData: (s) => s.statData?.['慕清澜'] || null,
+    linData: (s) => s.statData?.['林雅'] || null,
+    timeData: (s) => s.statData?.['时间'] || null,
+    sceneData: (s) => s.statData?.['场景'] || null,
+    userData: (s) => s.statData?.['user'] || null,
+    hubData: (s) => s.statData?.['慕清澜丈夫'] || null,
+
+    muOrgans: (s) => s.statData?.['慕清澜']?.['六器开发度'] || null,
+    linOrgans: (s) => s.statData?.['林雅']?.['六器开发度'] || null,
+
+    muTag: (s) => {
+      const st = s.statData?.['慕清澜']?.['阶段'];
+      return stageTagInfo(st);
+    },
+    linTag: (s) => {
+      const st = s.statData?.['林雅']?.['阶段'];
+      return stageTagInfo(st);
+    },
+  },
+
+  actions: {
+    delta(path) {
+      return this.deltas[path] || 0;
+    },
+
+    deltaSigned(path) {
+      const d = this.delta(path);
+      if (d === 0) return { text: '—', cls: 'delta-zero' };
+      if (d > 0) return { text: '↑' + d, cls: 'delta-up' };
+      return { text: '↓' + Math.abs(d), cls: 'delta-down' };
+    },
+
+    async loadData() {
+      this.loading = true;
+      this.error = null;
+      try {
+        /* SillyTavern API calls */
+        const id = await getCurrentMessageId();
+        if (id == null || id === undefined) {
+          this.error = '无法获取当前消息 ID';
+          this.loading = false;
+          return;
+        }
+
+        const raw = await getChatMessages(id);
+        const msgs = Array.isArray(raw) ? raw : [raw];
+        const curMsg = msgs.find(m => m.id === id) || msgs[msgs.length - 1] || raw;
+        this.statData = curMsg?.extra?.stat_data || curMsg?.stat_data || curMsg?.meta?.stat_data || null;
+
+        /* Previous message stat_data for delta computation */
+        if (id > 0) {
+          try {
+            const prevRaw = await getChatMessages(id - 1);
+            const prevMsgs = Array.isArray(prevRaw) ? prevRaw : [prevRaw];
+            const prevMsg = prevMsgs.find(m => m.id === id - 1) || prevMsgs[prevMsgs.length - 1] || prevRaw;
+            this.prevStatData = prevMsg?.extra?.stat_data || prevMsg?.stat_data || prevMsg?.meta?.stat_data || null;
+          } catch (_) {
+            this.prevStatData = null;
+          }
+        }
+
+        if (!this.statData) {
+          this.error = '当前消息中未找到 stat_data';
+        }
+      } catch (e) {
+        this.error = e.message || '加载失败';
+        console.error('[慕清澜状态栏] 加载错误:', e);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    toggleDark() {
+      this.darkMode = !this.darkMode;
+      try { localStorage.setItem('muqinglan-dark', this.darkMode ? '1' : '0'); } catch (_) {}
+    },
+
+    toggleCollapse() {
+      this.collapseMain = !this.collapseMain;
+    },
+
+    switchTab(tab) {
+      this.activeTab = tab;
+    },
+
+    initTheme() {
+      try {
+        this.darkMode = localStorage.getItem('muqinglan-dark') === '1';
+      } catch (_) {}
+    },
+  }
+});
+
+/* ==============================
+   Vue Components
+   ============================== */
+
+const CharacterCard = {
+  name: 'CharacterCard',
+  props: {
+    name: String,
+    icon: String,
+    tag: String,
+    tagColor: { type: String, default: '' },
+  },
+  template: `
+    <div class="char-card">
+      <div class="char-card-header">
+        <span class="char-card-icon" v-if="icon">{{ icon }}</span>
+        <span class="char-card-name">{{ name }}</span>
+        <span v-if="tag" class="char-card-tag" :style="{ background: tagColor || '#95a5a6' }">{{ tag }}</span>
+        <slot name="header-extra"></slot>
+      </div>
+      <div class="char-card-body">
+        <slot></slot>
+      </div>
+    </div>
+  `,
+};
+
+const InfoRow = {
+  name: 'InfoRow',
+  props: {
+    label: String,
+    value: [String, Number],
+    deltaPath: { type: String, default: '' },
+  },
+  template: `
+    <div class="info-row">
+      <span class="info-label">{{ label }}</span>
+      <span class="info-dots"></span>
+      <span class="info-value">
+        {{ value ?? '—' }}
+        <span v-if="deltaPath && dSig && dSig.text !== '—'" class="delta-tag" :class="dSig.cls">{{ dSig.text }}</span>
+      </span>
+    </div>
+  `,
+  setup(props) {
+    const store = useStatusStore();
+    const dSig = computed(() => props.deltaPath ? store.deltaSigned(props.deltaPath) : { text: '—', cls: 'delta-zero' });
+    return { dSig };
+  },
+};
+
+const ValueBadge = {
+  name: 'ValueBadge',
+  props: {
+    value: [String, Number],
+    deltaPath: { type: String, default: '' },
+    suffix: { type: String, default: '' },
+  },
+  template: `
+    <span class="value-badge">
+      <span>{{ value ?? '—' }}{{ suffix }}</span>
+      <span v-if="deltaPath && dSig && dSig.text !== '—'" class="delta-tag" :class="dSig.cls">{{ dSig.text }}</span>
+    </span>
+  `,
+  setup(props) {
+    const store = useStatusStore();
+    const dSig = computed(() => props.deltaPath ? store.deltaSigned(props.deltaPath) : { text: '—', cls: 'delta-zero' });
+    return { dSig };
+  },
+};
+
+const ProgressBar = {
+  name: 'ProgressBar',
+  props: {
+    value: { type: Number, default: 0 },
+    max: { type: Number, default: 100 },
+    color: { type: String, default: '' },
+    deltaPath: { type: String, default: '' },
+  },
+  template: `
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-fill" :style="{ width: pct + '%', background: barColor }"></div>
+      </div>
+      <span class="progress-value">
+        {{ value }}/{{ max }}
+        <span v-if="deltaPath && dSig && dSig.text !== '—'" class="delta-tag" :class="dSig.cls" style="font-size:0.7rem">{{ dSig.text }}</span>
+      </span>
+    </div>
+  `,
+  setup(props) {
+    const store = useStatusStore();
+    const pct = computed(() => Math.min(100, Math.max(0, (props.value / props.max) * 100)));
+    const barColor = computed(() => props.color || progressColor(props.value, props.max));
+    const dSig = computed(() => props.deltaPath ? store.deltaSigned(props.deltaPath) : { text: '—', cls: 'delta-zero' });
+    return { pct, barColor, dSig };
+  },
+};
+
+const OrganRow = {
+  name: 'OrganRow',
+  props: {
+    icon: String,
+    name: String,
+    devValue: { type: Number, default: 0 },
+    desc: { type: String, default: '' },
+    deltaPath: { type: String, default: '' },
+  },
+  template: `
+    <div class="organ-cell">
+      <div class="organ-head">
+        <span class="organ-icon">{{ icon }}</span>
+        <span class="organ-name">{{ name }}</span>
+        <div class="progress-wrap" style="max-width:90px">
+          <div class="progress-track">
+            <div class="progress-fill" :style="{ width: pct + '%', background: barColor }"></div>
+          </div>
+          <span class="progress-value" style="min-width:38px;font-size:0.72rem">
+            {{ devValue }}%
+            <span v-if="deltaPath && dSig && dSig.text !== '—'" class="delta-tag" :class="dSig.cls" style="font-size:0.65rem">{{ dSig.text }}</span>
+          </span>
+        </div>
+      </div>
+      <div class="organ-desc" :title="desc">{{ desc || '—' }}</div>
+    </div>
+  `,
+  setup(props) {
+    const store = useStatusStore();
+    const pct = computed(() => Math.min(100, Math.max(0, props.devValue)));
+    const barColor = computed(() => progressColor(props.devValue, 100));
+    const dSig = computed(() => props.deltaPath ? store.deltaSigned(props.deltaPath) : { text: '—', cls: 'delta-zero' });
+    return { pct, barColor, dSig };
+  },
+};
+
+/* ==============================
+   Root App Template
+   ============================== */
+
+const appTemplate = `
+<div class="folder-shell" :class="{ dark: store.darkMode, collapsed: store.collapseMain }">
+
+  <!-- Spine (left sidebar) -->
+  <div class="spine">
+    <div class="spine-label">慕清澜 · 档案</div>
+    <div class="spine-dots">
+      <div class="spine-dot"></div>
+      <div class="spine-dot"></div>
+      <div class="spine-dot"></div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content-area">
+
+    <!-- Header -->
+    <div class="header-bar">
+      <div class="header-title">
+        <span class="icon">📁</span> 慕清澜 · 状态档案
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" :title="store.darkMode ? '切换亮色' : '切换暗色'" @click="store.toggleDark()">
+          {{ store.darkMode ? '☀️' : '🌙' }}
+        </button>
+        <button class="btn-icon" :title="store.collapseMain ? '展开面板' : '折叠面板'" @click="store.toggleCollapse()">
+          {{ store.collapseMain ? '▶' : '▼' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div v-if="store.loading" class="status-msg">
+      <div class="spinner"></div>
+      <span>正在读取档案数据…</span>
+    </div>
+
+    <!-- Error State -->
+    <div v-else-if="store.error" class="status-msg">
+      <span class="icon">⚠️</span>
+      <span>{{ store.error }}</span>
+      <button class="btn-retry" @click="store.loadData()">重新加载</button>
+    </div>
+
+    <!-- No Data State -->
+    <div v-else-if="!store.hasData" class="status-msg">
+      <span class="icon">📭</span>
+      <span>暂无档案数据</span>
+      <button class="btn-retry" @click="store.loadData()">刷新</button>
+    </div>
+
+    <!-- Data Loaded -->
+    <template v-else>
+
+      <!-- Tabs -->
+      <div class="tab-bar">
+        <button class="tab-btn" :class="{ active: store.activeTab === 'daily' }" @click="store.switchTab('daily')">
+          📎 日常
+        </button>
+        <button class="tab-btn" :class="{ active: store.activeTab === 'muqinglan' }" @click="store.switchTab('muqinglan')">
+          🧵 慕清澜
+        </button>
+        <button class="tab-btn" :class="{ active: store.activeTab === 'linya' }" @click="store.switchTab('linya')">
+          🎀 林雅
+        </button>
+      </div>
+
+      <!-- ========================
+           TAB: 日常 (Daily)
+           ======================== -->
+      <div v-if="store.activeTab === 'daily'" class="tab-panel" key="daily">
+
+        <!-- 时间 -->
+        <character-card name="时间" icon="📅">
+          <info-row label="日期" :value="store.timeData?.['日期']" delta-path="时间.日期" />
+          <info-row label="时段" :value="store.timeData?.['时段']" delta-path="时间.时段" />
+          <info-row label="星期" :value="store.timeData?.['星期']" delta-path="时间.星期" />
+        </character-card>
+
+        <!-- 场景 -->
+        <character-card name="场景" icon="📍">
+          <info-row label="当前地点" :value="store.sceneData?.['当前地点']" delta-path="场景.当前地点" />
+        </character-card>
+
+        <!-- User -->
+        <character-card name="User" icon="👤">
+          <info-row label="当前位置" :value="store.userData?.['当前位置']" delta-path="user.当前位置" />
+          <info-row label="生理状态" :value="store.userData?.['生理状态']" delta-path="user.生理状态" />
+          <div class="section-title">互动记录</div>
+          <info-row label="与慕清澜次数" :value="store.userData?.['做爱次数_慕清澜']" delta-path="user.做爱次数_慕清澜" />
+          <info-row label="与林雅次数" :value="store.userData?.['做爱次数_林雅']" delta-path="user.做爱次数_林雅" />
+        </character-card>
+
+        <!-- 慕清澜丈夫 -->
+        <character-card name="慕清澜丈夫" icon="👨" :tag="store.hubData?.['婚姻状态']" :tagColor="hubTagColor">
+          <div class="husband-status">
+            <span class="info-label">察觉程度</span>
+            <progress-bar :value="store.hubData?.['察觉程度'] || 0" :max="100" delta-path="慕清澜丈夫.察觉程度" />
+          </div>
+          <info-row label="状态评级" :value="awareLabel(store.hubData?.['察觉程度'] || 0)" />
+          <info-row label="婚姻状态" :value="store.hubData?.['婚姻状态']" />
+        </character-card>
+
+      </div>
+
+      <!-- ========================
+           TAB: 慕清澜
+           ======================== -->
+      <div v-if="store.activeTab === 'muqinglan'" class="tab-panel" key="muqinglan">
+
+        <character-card name="慕清澜" icon="🧵" :tag="store.muTag.label" :tagColor="store.muTag.color">
+
+          <!-- Core stats -->
+          <div class="section-title">感情与状态</div>
+          <info-row label="对 User 的爱" :value="store.muData?.['对user的爱']" delta-path="慕清澜.对user的爱" />
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text-secondary)">
+            <span class="stage-dot" :style="{ background: 'var(--progress-love)' }"></span>
+            {{ loveLabel(store.muData?.['对user的爱'] || 0) }}
+          </div>
+
+          <div style="height:4px"></div>
+
+          <progress-bar :value="store.muData?.['对user的爱'] || 0" :max="200" color="var(--progress-love)" delta-path="慕清澜.对user的爱" />
+
+          <div style="height:8px"></div>
+
+          <info-row label="阶段" :value="store.muData?.['阶段']" />
+
+          <div style="height:4px"></div>
+
+          <info-row label="母性嫉妒值" :value="store.muData?.['母性嫉妒值']" delta-path="慕清澜.母性嫉妒值" />
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text-secondary)">
+            <span class="stage-dot" :style="{ background: 'var(--progress-jealous)' }"></span>
+            {{ jealousyLabel(store.muData?.['母性嫉妒值'] || 0) }}
+          </div>
+          <progress-bar :value="store.muData?.['母性嫉妒值'] || 0" :max="200" color="var(--progress-jealous)" delta-path="慕清澜.母性嫉妒值" />
+
+          <div style="height:8px"></div>
+
+          <info-row label="堕落值" :value="store.muData?.['堕落值']" delta-path="慕清澜.堕落值" />
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text-secondary)">
+            <span class="stage-dot" :style="{ background: 'var(--progress-fall)' }"></span>
+            {{ fallLabel(store.muData?.['堕落值'] || 0) }}
+          </div>
+          <progress-bar :value="store.muData?.['堕落值'] || 0" :max="200" color="var(--progress-fall)" delta-path="慕清澜.堕落值" />
+
+          <!-- Thoughts -->
+          <div v-if="store.muData?.['当前想法']" class="thoughts-block">
+            {{ store.muData['当前想法'] }}
+          </div>
+
+          <!-- 六器开发度 -->
+          <div class="section-title">六器开发度</div>
+          <div class="organ-grid">
+            <organ-row v-for="o in ORGAN_META" :key="o.key"
+              :icon="o.icon" :name="o.name"
+              :devValue="store.muOrgans?.[o.key]?.['开发度'] || 0"
+              :desc="store.muOrgans?.[o.key]?.['描述'] || ''"
+              :deltaPath="'慕清澜.六器开发度.' + o.key + '.开发度'" />
+          </div>
+        </character-card>
+
+      </div>
+
+      <!-- ========================
+           TAB: 林雅
+           ======================== -->
+      <div v-if="store.activeTab === 'linya'" class="tab-panel" key="linya">
+
+        <character-card name="林雅" icon="🎀" :tag="store.linTag.label" :tagColor="store.linTag.color">
+
+          <!-- Core stats -->
+          <div class="section-title">感情与状态</div>
+          <info-row label="对 User 的爱" :value="store.linData?.['对user的爱']" delta-path="林雅.对user的爱" />
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text-secondary)">
+            <span class="stage-dot" :style="{ background: 'var(--progress-love)' }"></span>
+            {{ loveLabel(store.linData?.['对user的爱'] || 0) }}
+          </div>
+
+          <div style="height:4px"></div>
+
+          <progress-bar :value="store.linData?.['对user的爱'] || 0" :max="200" color="var(--progress-love)" delta-path="林雅.对user的爱" />
+
+          <div style="height:8px"></div>
+
+          <info-row label="阶段" :value="store.linData?.['阶段']" />
+
+          <div style="height:4px"></div>
+
+          <info-row label="困惑不解度" :value="store.linData?.['困惑不解度']" delta-path="林雅.困惑不解度" />
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text-secondary)">
+            <span class="stage-dot" :style="{ background: 'var(--progress-mid)' }"></span>
+            {{ confuseLabel(store.linData?.['困惑不解度'] || 0) }}
+          </div>
+          <progress-bar :value="store.linData?.['困惑不解度'] || 0" :max="200" color="var(--progress-mid)" delta-path="林雅.困惑不解度" />
+
+          <div style="height:8px"></div>
+
+          <info-row label="堕落值" :value="store.linData?.['堕落值']" delta-path="林雅.堕落值" />
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text-secondary)">
+            <span class="stage-dot" :style="{ background: 'var(--progress-fall)' }"></span>
+            {{ fallLabel(store.linData?.['堕落值'] || 0) }}
+          </div>
+          <progress-bar :value="store.linData?.['堕落值'] || 0" :max="200" color="var(--progress-fall)" delta-path="林雅.堕落值" />
+
+          <!-- Thoughts -->
+          <div v-if="store.linData?.['当前想法']" class="thoughts-block">
+            {{ store.linData['当前想法'] }}
+          </div>
+
+          <!-- 六器开发度 -->
+          <div class="section-title">六器开发度</div>
+          <div class="organ-grid">
+            <organ-row v-for="o in ORGAN_META" :key="o.key"
+              :icon="o.icon" :name="o.name"
+              :devValue="store.linOrgans?.[o.key]?.['开发度'] || 0"
+              :desc="store.linOrgans?.[o.key]?.['描述'] || ''"
+              :deltaPath="'林雅.六器开发度.' + o.key + '.开发度'" />
+          </div>
+        </character-card>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="footer-bar">
+        慕清澜 · 状态档案 v1.0.0 · SillyTavern 角色状态栏
+      </div>
+
+    </template>
+
+  </div>
+</div>
+`;
+
+/* ==============================
+   App Bootstrap
+   ============================== */
+
+function mountApp() {
+  const pinia = createPinia();
+  const app = createApp({
+    name: 'MuQingLanStatus',
+    template: appTemplate,
+    setup() {
+      const store = useStatusStore();
+
+      store.initTheme();
+
+      onMounted(() => {
+        store.loadData();
+      });
+
+      /* Expose label helpers & constants for template use */
+      const hubTagColor = computed(() => {
+        const st = store.statData?.['慕清澜丈夫']?.['婚姻状态'];
+        return STAGE_COLORS[st] || '#95a5a6';
+      });
+
+      return {
+        store,
+        loveLabel,
+        fallLabel,
+        jealousyLabel,
+        confuseLabel,
+        awareLabel,
+        STAGE_COLORS,
+        ORGAN_META,
+        hubTagColor,
+      };
+    },
+  });
+
+  /* Register components (kebab-case for in-template usage) */
+  app.component('CharacterCard', CharacterCard);
+  app.component('InfoRow', InfoRow);
+  app.component('ValueBadge', ValueBadge);
+  app.component('ProgressBar', ProgressBar);
+  app.component('OrganRow', OrganRow);
+
+  app.use(pinia);
+  app.mount('#app');
+}
+
+/* SillyTavern convention: wait for jQuery ready, or fall back to DOM ready */
+function onReady(fn) {
+  if (typeof $ !== 'undefined' && typeof $.fn !== 'undefined') {
+    $(fn);
+  } else if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fn);
+  } else {
+    fn();
+  }
+}
+
+onReady(mountApp);
+</script>
+</body>
+</html>
