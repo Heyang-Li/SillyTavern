@@ -821,7 +821,7 @@ const useStatusStore = defineStore('status', {
         const raw = await getChatMessages(id);
         const msgs = Array.isArray(raw) ? raw : [raw];
         const curMsg = msgs.find(m => (m?.id ?? m?.message_id) === id) || msgs[msgs.length - 1] || raw;
-        this.statData = curMsg?.data?.stat_data ?? curMsg?.extra?.stat_data ?? curMsg?.stat_data ?? curMsg?.meta?.stat_data ?? null;
+        this.statData = curMsg?.extra?.stat_data ?? curMsg?.data?.stat_data ?? curMsg?.stat_data ?? curMsg?.meta?.stat_data ?? null;
 
         /* Previous message stat_data for delta computation */
         if (id > 0) {
@@ -829,7 +829,7 @@ const useStatusStore = defineStore('status', {
             const prevRaw = await getChatMessages(id - 1);
             const prevMsgs = Array.isArray(prevRaw) ? prevRaw : [prevRaw];
             const prevMsg = prevMsgs.find(m => (m?.id ?? m?.message_id) === id - 1) || prevMsgs[prevMsgs.length - 1] || prevRaw;
-            this.prevStatData = prevMsg?.data?.stat_data ?? prevMsg?.extra?.stat_data ?? prevMsg?.stat_data ?? prevMsg?.meta?.stat_data ?? null;
+            this.prevStatData = prevMsg?.extra?.stat_data ?? prevMsg?.data?.stat_data ?? prevMsg?.stat_data ?? prevMsg?.meta?.stat_data ?? null;
           } catch (_) {
             this.prevStatData = null;
           }
