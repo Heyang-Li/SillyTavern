@@ -649,6 +649,61 @@ body {
 
 <script>
 (async () => {
+const STATUS_DATA_TYPE = 'muqinglan-status-data';
+const STATUS_ERROR_TYPE = 'muqinglan-status-error';
+const STATUS_READY_TYPE = 'muqinglan-status-ready';
+const STATUS_HEIGHT_TYPE = 'muqinglan-status-height';
+let bridgedPayload = null;
+let activeStatusStore = null;
+const payloadWaiters = new Set();
+
+function receiveBridgedPayload(payload) {
+  bridgedPayload = payload;
+  for (const resolve of payloadWaiters) resolve(payload);
+  payloadWaiters.clear();
+  if (activeStatusStore) activeStatusStore.applyExternalPayload(payload);
+}
+
+function requestStatusPayload() {
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: STATUS_READY_TYPE }, '*');
+  }
+}
+
+function waitForBridgedPayload(timeout = 8000) {
+  if (bridgedPayload) return Promise.resolve(bridgedPayload);
+  return new Promise(resolve => {
+    const timer = setTimeout(() => {
+      payloadWaiters.delete(done);
+      resolve(null);
+    }, timeout);
+    const done = payload => {
+      clearTimeout(timer);
+      resolve(payload);
+    };
+    payloadWaiters.add(done);
+  });
+}
+
+window.addEventListener('message', event => {
+  if (event.source !== window.parent || !event.data || typeof event.data !== 'object') return;
+  if (event.data.type === STATUS_DATA_TYPE) {
+    receiveBridgedPayload({
+      statData: event.data.statData ?? null,
+      prevStatData: event.data.prevStatData ?? null,
+      error: null,
+    });
+  } else if (event.data.type === STATUS_ERROR_TYPE) {
+    receiveBridgedPayload({
+      statData: null,
+      prevStatData: null,
+      error: event.data.message || '状态数据桥接失败',
+    });
+  }
+});
+
+requestStatusPayload();
+
 const loadScript = src => new Promise((resolve, reject) => {
   const script = document.createElement('script');
   script.src = src;
@@ -806,11 +861,29 @@ const useStatusStore = defineStore('status', {
       return { text: '↓' + Math.abs(d), cls: 'delta-down' };
     },
 
+    applyExternalPayload(payload) {
+      this.statData = payload?.statData ?? null;
+      this.prevStatData = payload?.prevStatData ?? null;
+      this.error = payload?.error || (this.statData ? null : '当前消息中未找到 stat_data');
+      this.loading = false;
+    },
+
     async loadData() {
       this.loading = true;
       this.error = null;
       try {
+        if (window.parent !== window) {
+          requestStatusPayload();
+          const payload = bridgedPayload ?? await waitForBridgedPayload();
+          if (!payload) throw new Error('未收到酒馆状态数据');
+          this.applyExternalPayload(payload);
+          return;
+        }
+
         /* SillyTavern API calls */
+        if (typeof getCurrentMessageId !== 'function' || typeof getChatMessages !== 'function') {
+          throw new Error('当前环境未提供酒馆消息接口');
+        }
         const id = await getCurrentMessageId();
         if (id == null || id === undefined) {
           this.error = '无法获取当前消息 ID';
@@ -1251,6 +1324,7 @@ function mountApp() {
     template: appTemplate,
     setup() {
       const store = useStatusStore();
+      activeStatusStore = store;
 
       store.initTheme();
 
@@ -1287,6 +1361,20 @@ function mountApp() {
 
   app.use(pinia);
   app.mount('#app');
+
+  if (window.parent !== window) {
+    let lastHeight = 0;
+    const reportHeight = () => {
+      const height = Math.ceil(Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
+      if (Math.abs(height - lastHeight) < 2) return;
+      lastHeight = height;
+      window.parent.postMessage({ type: STATUS_HEIGHT_TYPE, height }, '*');
+    };
+    const observer = new ResizeObserver(reportHeight);
+    observer.observe(document.documentElement);
+    observer.observe(document.body);
+    requestAnimationFrame(reportHeight);
+  }
 }
 
 /* SillyTavern convention: wait for jQuery ready, or fall back to DOM ready */
