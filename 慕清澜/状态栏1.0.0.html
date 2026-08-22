@@ -643,21 +643,32 @@ body {
 }
 </style>
 
-<script type="importmap">
-{
-  "imports": {
-    "vue": "https://testingcf.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.js",
-    "pinia": "https://testingcf.jsdelivr.net/npm/pinia@2/dist/pinia.esm-browser.js"
-  }
-}
-</script>
 </head>
 <body>
 <div id="app"></div>
 
-<script type="module">
-import { createApp, ref, computed, onMounted } from 'vue';
-import { createPinia, defineStore } from 'pinia';
+<script>
+(async () => {
+const loadScript = src => new Promise((resolve, reject) => {
+  const script = document.createElement('script');
+  script.src = src;
+  script.onload = resolve;
+  script.onerror = () => reject(new Error(`依赖加载失败: ${src}`));
+  document.head.appendChild(script);
+});
+
+if (!window.Vue) {
+  await loadScript('https://testingcf.jsdelivr.net/npm/vue@3.5.41/dist/vue.global.prod.js');
+}
+if (!window.VueDemi) {
+  await loadScript('https://testingcf.jsdelivr.net/npm/vue-demi@0.14.10/lib/index.iife.js');
+}
+if (!window.Pinia) {
+  await loadScript('https://testingcf.jsdelivr.net/npm/pinia@2.3.1/dist/pinia.iife.prod.js');
+}
+
+const { createApp, ref, computed, onMounted } = Vue;
+const { createPinia, defineStore } = Pinia;
 
 /* ==============================
    Helper Functions
@@ -809,16 +820,16 @@ const useStatusStore = defineStore('status', {
 
         const raw = await getChatMessages(id);
         const msgs = Array.isArray(raw) ? raw : [raw];
-        const curMsg = msgs.find(m => m.id === id) || msgs[msgs.length - 1] || raw;
-        this.statData = curMsg?.extra?.stat_data || curMsg?.stat_data || curMsg?.meta?.stat_data || null;
+        const curMsg = msgs.find(m => (m?.id ?? m?.message_id) === id) || msgs[msgs.length - 1] || raw;
+        this.statData = curMsg?.data?.stat_data ?? curMsg?.extra?.stat_data ?? curMsg?.stat_data ?? curMsg?.meta?.stat_data ?? null;
 
         /* Previous message stat_data for delta computation */
         if (id > 0) {
           try {
             const prevRaw = await getChatMessages(id - 1);
             const prevMsgs = Array.isArray(prevRaw) ? prevRaw : [prevRaw];
-            const prevMsg = prevMsgs.find(m => m.id === id - 1) || prevMsgs[prevMsgs.length - 1] || prevRaw;
-            this.prevStatData = prevMsg?.extra?.stat_data || prevMsg?.stat_data || prevMsg?.meta?.stat_data || null;
+            const prevMsg = prevMsgs.find(m => (m?.id ?? m?.message_id) === id - 1) || prevMsgs[prevMsgs.length - 1] || prevRaw;
+            this.prevStatData = prevMsg?.data?.stat_data ?? prevMsg?.extra?.stat_data ?? prevMsg?.stat_data ?? prevMsg?.meta?.stat_data ?? null;
           } catch (_) {
             this.prevStatData = null;
           }
@@ -1290,6 +1301,11 @@ function onReady(fn) {
 }
 
 onReady(mountApp);
+})().catch(error => {
+  console.error('[慕清澜状态栏] 初始化失败:', error);
+  const appRoot = document.getElementById('app');
+  if (appRoot) appRoot.textContent = `状态栏加载失败：${error.message || error}`;
+});
 </script>
 </body>
 </html>
