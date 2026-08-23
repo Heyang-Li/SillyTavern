@@ -21,9 +21,23 @@
   const clean = (value) => String(value ?? '—').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const number = (value) => Math.max(0, Math.min(100, Number(value) || 0));
   const card = (label, value, wide) => '<div class="kk-card' + (wide ? ' kk-wide' : '') + '"><span class="kk-label">' + clean(label) + '</span><span class="' + (wide ? 'kk-text' : 'kk-value') + '">' + clean(value) + '</span></div>';
-  const DATA_TYPE = 'karin-kana-status-data';
-  const READY_TYPE = 'karin-kana-status-ready';
-  const ERROR_TYPE = 'karin-kana-status-error';
+  const contexts = [window];
+  for (const name of ['parent', 'top']) {
+    try {
+      const candidate = window[name];
+      if (candidate && !contexts.includes(candidate)) contexts.push(candidate);
+    } catch (_) {}
+  }
+  const host = contexts.find((ctx) => {
+    try {
+      return typeof ctx.getCurrentMessageId === 'function' && typeof ctx.getChatMessages === 'function';
+    } catch (_) { return false; }
+  });
+  const selectMessage = (raw, id) => {
+    const messages = Array.isArray(raw) ? raw : [raw];
+    return messages.find((message) => (message?.id ?? message?.message_id) === id) || messages[messages.length - 1] || raw;
+  };
+  const readStatData = (message) => message?.data?.stat_data ?? message?.extra?.stat_data ?? message?.stat_data ?? message?.meta?.stat_data ?? null;
 
   function sisterPanel(state, name, theme) {
     const sister = get(state, name, {});
@@ -44,26 +58,34 @@
     root.querySelectorAll('.kk-tab').forEach((button) => button.addEventListener('click', () => { active = button.dataset.tab; render(state); }));
   }
 
-  window.addEventListener('message', (event) => {
-    if (event.source !== window.parent || !event.data || typeof event.data !== 'object') return;
-    if (event.data.type === DATA_TYPE) render(event.data.statData || null);
-    if (event.data.type === ERROR_TYPE) {
-      root.innerHTML = '<div class="kk-empty">状态数据读取失败：' + clean(event.data.message || '未知错误') + '</div>';
+  async function loadCurrentState() {
+    if (!host) throw new Error('未找到酒馆消息接口');
+    const id = await host.getCurrentMessageId.call(host);
+    if (id == null) throw new Error('无法获取当前消息 ID');
+    const raw = await host.getChatMessages.call(host, id);
+    const state = readStatData(selectMessage(raw, id));
+    if (!state) throw new Error('当前楼层没有 stat_data');
+    return state;
+  }
+  async function refresh() {
+    try {
+      render(await loadCurrentState());
+    } catch (error) {
+      root.innerHTML = '<div class="kk-empty">状态数据读取失败：' + clean(error?.message || String(error)) + '</div>';
     }
-  });
-  render(null);
-  if (window.parent !== window) window.parent.postMessage({ type: READY_TYPE }, '*');
-  if (window.parent !== window && window.ResizeObserver) {
+  }
+  refresh();
+  if (window.frameElement && window.ResizeObserver) {
     let lastHeight = 0;
-    const reportHeight = () => {
-      const height = Math.ceil(Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight));
+    const fitFrame = () => {
+      const height = Math.max(160, Math.ceil(Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight)));
       if (Math.abs(height - lastHeight) < 2) return;
       lastHeight = height;
-      window.parent.postMessage({ type: 'karin-kana-status-height', height }, '*');
+      window.frameElement.style.height = height + 'px';
     };
-    const observer = new ResizeObserver(reportHeight);
+    const observer = new ResizeObserver(fitFrame);
     observer.observe(doc.documentElement);
     observer.observe(doc.body);
-    requestAnimationFrame(reportHeight);
+    requestAnimationFrame(fitFrame);
   }
 })();
